@@ -5,18 +5,16 @@
     <PackageId>Xeyth.Result</PackageId>
     <Description>A library for representing operation results.</Description>
     <PackageTags>Result;Utility</PackageTags>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/Xeythhhh/Xeyth.Result</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\LICENSE" Pack="true">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\README.md" Pack="true">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

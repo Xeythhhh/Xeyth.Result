@@ -28,11 +28,11 @@ jobs:
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
 
+    - name : Copy README.md
+      run: cp README.md Xeyth.Result/
+
     - name: Pack
-      run: |
-        cp README.md Xeyth.Result/
-        cp LICENSE Xeyth.Result/
-        dotnet pack --no-build --configuration Release -o ./artifacts
+      run: dotnet pack --no-build --configuration Release -o ./artifacts
 
     - name: Publish to NuGet
       if: success()  # Only run if previous steps succeed
