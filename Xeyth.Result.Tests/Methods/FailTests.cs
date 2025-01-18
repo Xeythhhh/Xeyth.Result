@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class ResultFailTests : SnapshotTestBase
+public class FailTests : SnapshotTestBase
 {
     [Fact]
     public Task ShouldCreateFailureResultWithErrorMessage() =>

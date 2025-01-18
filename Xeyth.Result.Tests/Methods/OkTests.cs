@@ -1,6 +1,6 @@
 ﻿namespace Xeyth.Result.Tests.Methods;
 
-public class ResultOkTests : SnapshotTestBase
+public class OkTests : SnapshotTestBase
 {
     [Fact]
     public Task ShouldCreateNonGenericSuccessResult() =>
