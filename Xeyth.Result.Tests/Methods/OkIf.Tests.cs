@@ -5,34 +5,34 @@ namespace Xeyth.Result.Tests.Methods;
 public class OkIfTests : SnapshotTestBase
 {
     [Fact]
-    public Task ShouldCreateSuccessResultWhenPredicateIsTrue() =>
+    public Task ShouldReturnSuccessWhenPredicateIsTrue() =>
         Verify(Result.OkIf(() => true, "Test error message"), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWhenPredicateIsFalseWithErrorMessage() =>
+    public Task ShouldReturnFailureWhenPredicateIsFalseWithErrorMessage() =>
         Verify(Result.OkIf(() => false, "Test error message"), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWhenPredicateIsFalseWithErrorFactory() =>
+    public Task ShouldReturnFailureWhenPredicateIsFalseWithErrorFactory() =>
         Verify(Result.OkIf(() => false, () => Error.DefaultFactory("Test error")), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWhenPredicateIsFalseWithCustomError() =>
+    public Task ShouldReturnFailureWhenPredicateIsFalseWithError() =>
         Verify(Result.OkIf(() => false, new Error("Test error")), Settings);
 
     [Fact]
-    public Task ShouldCreateSuccessResultWhenPredicateIsTrueWithCustomErrorFactory() =>
+    public Task ShouldReturnSuccessWhenPredicateIsTrueWithCustomErrorFactory() =>
         Verify(Result.OkIf(() => true, () => new Error("Test error")), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWithCustomErrorFactoryWhenPredicateIsFalse() =>
+    public Task ShouldReturnFailureWithCustomErrorFactoryWhenPredicateIsFalse() =>
         Verify(Result.OkIf(() => false, () => new Error("Test error")), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWhenPredicateIsFalseWithErrorMessageFactory() =>
+    public Task ShouldReturnFailureWhenPredicateIsFalseWithErrorMessageFactory() =>
         Verify(Result.OkIf(() => false, () => "Test error message"), Settings);
 
     [Fact]
     public void ShouldThrowIfPredicateIsNull() =>
-        Throws(() => Result.OkIf(null!, "Error"), Settings);
+        Throws(() => Result.OkIf((Func<bool>)null!, "Error"), Settings);
 }

@@ -3,10 +3,10 @@
 public class OkTests : SnapshotTestBase
 {
     [Fact]
-    public Task ShouldCreateNonGenericSuccessResult() =>
+    public Task ShouldReturnSuccess() =>
         Verify(Result.Ok(), Settings);
 
     [Fact]
-    public Task ShouldCreateGenericSuccessResultWithValue() =>
+    public Task ShouldReturnSuccessWithValue() =>
         Verify(Result.Ok(420), Settings);
 }

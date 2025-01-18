@@ -5,19 +5,19 @@ namespace Xeyth.Result.Tests.Methods;
 public class FailTests : SnapshotTestBase
 {
     [Fact]
-    public Task ShouldCreateFailureResultWithErrorMessage() =>
+    public Task ShouldReturnFailureWhenErrorMessageIsProvided() =>
         Verify(Result.Fail("Test error message"), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWithError() =>
+    public Task ShouldReturnFailureWhenErrorIsProvided() =>
         Verify(Result.Fail(Error.DefaultFactory("Test error")), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWithErrorMessages() =>
+    public Task ShouldReturnFailureWhenErrorMessagesAreProvided() =>
         Verify(Result.Fail(["Error 1", "Error 2"]), Settings);
 
     [Fact]
-    public Task ShouldCreateFailureResultWithErrors() =>
+    public Task ShouldReturnFailureWhenErrorsAreProvided() =>
         Verify(Result.Fail(
         [
             Error.DefaultFactory("Error 1"),
@@ -25,22 +25,22 @@ public class FailTests : SnapshotTestBase
         ]), Settings);
 
     [Fact]
-    public Task ShouldCreateGenericFailureResultWithErrorMessage() =>
+    public Task ShouldReturnGenericFailureWhenErrorMessageIsProvided() =>
         Verify(Result.Fail<int>("Test error message"), Settings)
             .IgnoreMember<Result<int>>(r => r.Value);
 
     [Fact]
-    public Task ShouldCreateGenericFailureResultWithError() =>
+    public Task ShouldReturnGenericFailureWhenErrorIsProvided() =>
         Verify(Result.Fail<int>(Error.DefaultFactory("Test error")), Settings)
             .IgnoreMember<Result<int>>(r => r.Value);
 
     [Fact]
-    public Task ShouldCreateGenericFailureResultWithErrorMessages() =>
+    public Task ShouldReturnGenericFailureWhenErrorMessagesAreProvided() =>
         Verify(Result.Fail<int>(["Error 1", "Error 2"]), Settings)
             .IgnoreMember<Result<int>>(r => r.Value);
 
     [Fact]
-    public Task ShouldCreateGenericFailureResultWithErrors() =>
+    public Task ShouldReturnGenericFailureWhenErrorsAreProvided() =>
         Verify(Result.Fail<int>(
         [
             Error.DefaultFactory("Error 1"),

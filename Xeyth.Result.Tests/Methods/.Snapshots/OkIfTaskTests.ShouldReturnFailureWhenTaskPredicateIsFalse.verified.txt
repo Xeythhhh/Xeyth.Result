@@ -3,12 +3,12 @@
   IsSuccess: false,
   Reasons: [
     {
-      Message: Test error message
+      Message: Error
     }
   ],
   Errors: [
     {
-      Message: Test error message
+      Message: Error
     }
   ]
 }
