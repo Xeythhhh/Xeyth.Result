@@ -5,8 +5,8 @@
     <PackageId>Xeyth.Result</PackageId>
     <Description>A library for representing operation results.</Description>
     <PackageTags>Result;Utility</PackageTags>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>..\README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Xeythhhh/Xeyth.Result</RepositoryUrl>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
