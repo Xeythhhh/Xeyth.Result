@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods
 {
-    public class OkIfValueTaskTests : SnapshotTestBase
+    public class OkIfValueTask : SnapshotTestBase
     {
         [Fact]
         public Task ShouldReturnSuccessWhenValueTaskPredicateIsTrue() =>

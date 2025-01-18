@@ -3,12 +3,12 @@
   IsSuccess: false,
   Reasons: [
     {
-      Message: Test error
+      Message: Generic error
     }
   ],
   Errors: [
     {
-      Message: Test error
+      Message: Generic error
     }
   ]
 }

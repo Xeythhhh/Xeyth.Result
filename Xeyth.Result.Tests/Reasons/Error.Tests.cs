@@ -80,4 +80,16 @@ public class ErrorTests : SnapshotTestBase
             .WithMetadata("Key", "Value")
             .CausedBy("Cause 1")
             .CausedBy(new Exception("Test exception")).ToString(), Settings);
+
+    [Fact]
+    public Task ShouldConvertSingleErrorToResult() =>
+        Verify((Result)new Error("Test error"), Settings);
+
+    [Fact]
+    public Task ShouldConvertErrorListToResult() =>
+        Verify((Result)new List<Error>()
+                {
+                    new("Error 1"),
+                    new("Error 2")
+                }, Settings);
 }

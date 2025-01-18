@@ -1,6 +1,6 @@
 ﻿namespace Xeyth.Result.Tests.Methods;
 
-public class OkTests : SnapshotTestBase
+public class Ok : SnapshotTestBase
 {
     [Fact]
     public Task ShouldReturnSuccess() =>

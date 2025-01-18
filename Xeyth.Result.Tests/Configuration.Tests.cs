@@ -1,5 +1,5 @@
 ﻿namespace Xeyth.Result.Tests;
-public class VerifyCheckTests
+public class ConfigurationTests
 {
     [Fact]
     public Task Run() => VerifyChecks.Run();

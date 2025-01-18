@@ -16,8 +16,7 @@ public partial class Result
     /// if the current <see cref="Result"/> is failed or the <paramref name="validator"/> fails.</returns>
     public Result<TNewValue> ToResult<TNewValue>(TNewValue newValue, Func<TNewValue, bool>? validator = null) =>
         IsFailed || validator != null && !validator(newValue)
-            ? ToResult<TNewValue>().WithReasons(Reasons)
+            ? ToResult<TNewValue>()
             : ToResult<TNewValue>()
-                .WithValue(newValue)
-                .WithReasons(Reasons);
+                .WithValue(newValue);
 }

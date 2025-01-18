@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OkIfTests : SnapshotTestBase
+public class OkIf : SnapshotTestBase
 {
     [Fact]
     public Task ShouldReturnSuccessWhenPredicateIsTrue() =>

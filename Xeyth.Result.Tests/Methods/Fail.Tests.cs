@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class FailTests : SnapshotTestBase
+public class Fail : SnapshotTestBase
 {
     [Fact]
     public Task ShouldReturnFailureWhenErrorMessageIsProvided() =>
@@ -27,17 +27,17 @@ public class FailTests : SnapshotTestBase
     [Fact]
     public Task ShouldReturnGenericFailureWhenErrorMessageIsProvided() =>
         Verify(Result.Fail<int>("Test error message"), Settings)
-            .IgnoreMember<Result<int>>(r => r.Value);
+            .ScrubMember<Result<int>>(r => r.Value);
 
     [Fact]
     public Task ShouldReturnGenericFailureWhenErrorIsProvided() =>
         Verify(Result.Fail<int>(Error.DefaultFactory("Test error")), Settings)
-            .IgnoreMember<Result<int>>(r => r.Value);
+            .ScrubMember<Result<int>>(r => r.Value);
 
     [Fact]
     public Task ShouldReturnGenericFailureWhenErrorMessagesAreProvided() =>
         Verify(Result.Fail<int>(["Error 1", "Error 2"]), Settings)
-            .IgnoreMember<Result<int>>(r => r.Value);
+            .ScrubMember<Result<int>>(r => r.Value);
 
     [Fact]
     public Task ShouldReturnGenericFailureWhenErrorsAreProvided() =>
@@ -46,5 +46,5 @@ public class FailTests : SnapshotTestBase
             Error.DefaultFactory("Error 1"),
             Error.DefaultFactory("Error 2")
         ]), Settings)
-            .IgnoreMember<Result<int>>(r => r.Value);
+            .ScrubMember<Result<int>>(r => r.Value);
 }
