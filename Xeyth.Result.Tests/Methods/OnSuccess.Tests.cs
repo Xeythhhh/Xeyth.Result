@@ -1,10 +1,11 @@
 ﻿using Xeyth.Result.Reasons;
 using Shouldly;
 using System.Collections;
+using Xunit.Abstractions;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OnSuccess
+public class OnSuccess(ITestOutputHelper output)
 {
     public sealed class OnSuccessData : IEnumerable<object[]>
     {
@@ -12,7 +13,11 @@ public class OnSuccess
 
         public IEnumerator<object[]> GetEnumerator()
         {
+            yield return new object[] { Result.Ok(), true };
             yield return new object[] { Result.Ok().WithSuccess("Some success"), true };
+            yield return new object[] { Result.Ok().WithError("Test Error"), false };
+            yield return new object[] { Result.Ok().WithError("Test Error").WithSuccess("Some success"), false };
+            yield return new object[] { Result.Fail("Test Error"), false };
             yield return new object[] { Result.Fail("Test Error").WithSuccess("Some success"), false };
         }
     }
@@ -34,7 +39,7 @@ public class OnSuccess
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public async Task OnError_ShouldInvokeAsyncAction_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public async Task OnSuccess_ShouldInvokeAsyncAction_IfResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -53,11 +58,16 @@ public class OnSuccess
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public void OnError_ShouldInvokeActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public void OnSuccess_ShouldInvokeActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
-        Action<IEnumerable<ISuccess>> action = new((successes) => actionInvoked = successes.Any());
+        Action<IEnumerable<ISuccess>> action = new((successes) =>
+        {
+            actionInvoked = true;
+            foreach (ISuccess success in successes)
+                output.WriteLine(success.Message);
+        });
 
         // Act
         result.OnSuccess(action);
@@ -68,13 +78,15 @@ public class OnSuccess
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public async Task OnError_ShouldInvokeAsyncActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public async Task OnSuccess_ShouldInvokeAsyncActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
         Func<IEnumerable<ISuccess>, Task> action = new((successes) =>
         {
-            actionInvoked = successes.Any();
+            actionInvoked = true;
+            foreach (ISuccess success in successes)
+                output.WriteLine(success.Message);
             return Task.CompletedTask;
         });
 

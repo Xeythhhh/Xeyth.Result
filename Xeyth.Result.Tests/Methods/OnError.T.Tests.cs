@@ -5,23 +5,25 @@ using Xunit.Abstractions;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OnError(ITestOutputHelper output)
+public class OnErrorT(ITestOutputHelper output)
 {
-    public sealed class OnErrorData : IEnumerable<object[]>
+    private const int _testValue = 420;
+
+    public sealed class OnErrorTData : IEnumerable<object[]>
     {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { Result.Ok(), false };
-            yield return new object[] { Result.Ok().WithError("Test Error"), true };
-            yield return new object[] { Result.Fail("Test Error"), true };
+            yield return new object[] { Result.Ok(_testValue), false };
+            yield return new object[] { Result.Ok(_testValue).WithError("Test Error"), true };
+            yield return new object[] { Result.Fail<int>("Test Error"), true };
         }
     }
 
     [Theory]
-    [ClassData(typeof(OnErrorData))]
-    public void OnError_ShouldInvokeAction_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    [ClassData(typeof(OnErrorTData))]
+    public void OnErrorGeneric_ShouldInvokeAction_IfResultIsFailure(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -35,8 +37,8 @@ public class OnError(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnErrorData))]
-    public async Task OnError_ShouldInvokeAsyncAction_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    [ClassData(typeof(OnErrorTData))]
+    public async Task OnErrorGeneric_ShouldInvokeAsyncAction_IfResultIsFailure(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -54,8 +56,8 @@ public class OnError(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnErrorData))]
-    public void OnError_ShouldInvokeActionWithErrors_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    [ClassData(typeof(OnErrorTData))]
+    public void OnErrorGeneric_ShouldInvokeActionWithErrors_IfResultIsFailure(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -74,8 +76,8 @@ public class OnError(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnErrorData))]
-    public async Task OnError_ShouldInvokeAsyncActionWithErrors_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    [ClassData(typeof(OnErrorTData))]
+    public async Task OnErrorGeneric_ShouldInvokeAsyncActionWithErrors_IfResultIsFailure(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
