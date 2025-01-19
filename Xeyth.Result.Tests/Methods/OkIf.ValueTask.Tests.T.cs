@@ -1,5 +1,4 @@
 ﻿using Xeyth.Result.Reasons;
-using System.Threading.Tasks;
 
 namespace Xeyth.Result.Tests.Methods
 {

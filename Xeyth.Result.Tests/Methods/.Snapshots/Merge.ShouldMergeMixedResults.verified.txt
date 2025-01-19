@@ -1,0 +1,15 @@
+﻿{
+  Value: {Scrubbed},
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: [
+    {
+      Message: Error 3
+    }
+  ],
+  Errors: [
+    {
+      Message: Error 3
+    }
+  ]
+}
