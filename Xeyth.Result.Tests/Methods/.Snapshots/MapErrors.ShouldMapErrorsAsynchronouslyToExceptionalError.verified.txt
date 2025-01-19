@@ -1,0 +1,24 @@
+﻿{
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: [
+    {
+      Exception: {
+        $type: InvalidOperationException,
+        Type: InvalidOperationException,
+        Message: Async exception detail
+      },
+      Message: (Async Mapped) Original Error
+    }
+  ],
+  Errors: [
+    {
+      Exception: {
+        $type: InvalidOperationException,
+        Type: InvalidOperationException,
+        Message: Async exception detail
+      },
+      Message: (Async Mapped) Original Error
+    }
+  ]
+}

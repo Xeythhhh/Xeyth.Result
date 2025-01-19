@@ -1,0 +1,24 @@
+﻿{
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: [
+    {
+      Message: Error
+    },
+    {
+      SomeCustomSuccessField: This is a custom Success implementation,
+      Message: (Mapped) Success
+    }
+  ],
+  Errors: [
+    {
+      Message: Error
+    }
+  ],
+  Successes: [
+    {
+      SomeCustomSuccessField: This is a custom Success implementation,
+      Message: (Mapped) Success
+    }
+  ]
+}

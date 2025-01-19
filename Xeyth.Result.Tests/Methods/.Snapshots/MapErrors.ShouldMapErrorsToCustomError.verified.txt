@@ -1,0 +1,16 @@
+{
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: [
+    {
+      SomeCustomErrorField: This is a custom Error implementation,
+      Message: (Mapped) Original Error
+    }
+  ],
+  Errors: [
+    {
+      SomeCustomErrorField: This is a custom Error implementation,
+      Message: (Mapped) Original Error
+    }
+  ]
+}
