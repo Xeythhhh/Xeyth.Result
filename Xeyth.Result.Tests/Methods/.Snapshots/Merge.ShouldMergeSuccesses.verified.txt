@@ -1,4 +1,20 @@
 ﻿{
   IsFailed: false,
-  IsSuccess: true
+  IsSuccess: true,
+  Reasons: [
+    {
+      Message: Success 1
+    },
+    {
+      Message: Success 2
+    }
+  ],
+  Successes: [
+    {
+      Message: Success 1
+    },
+    {
+      Message: Success 2
+    }
+  ]
 }

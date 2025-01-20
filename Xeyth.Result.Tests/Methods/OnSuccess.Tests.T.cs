@@ -5,11 +5,11 @@ using Xunit.Abstractions;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OnSuccessT(ITestOutputHelper output)
+public class OnSuccessGeneric(ITestOutputHelper output)
 {
     private const int _testValue = 420;
 
-    public sealed class OnSuccessTData : IEnumerable<object[]>
+    public sealed class OnSuccessGenericData : IEnumerable<object[]>
     {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -54,8 +54,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public void OnSuccessGeneric_ShouldInvokeAction_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public void ShouldInvokeAction_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -69,8 +69,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public void OnSuccessGeneric_ShouldInvokeActionWithValue_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public void ShouldInvokeActionWithValue_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -84,8 +84,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public async Task OnSuccessGeneric_ShouldInvokeAsyncAction_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public async Task ShouldInvokeAsyncAction_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -103,8 +103,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public async Task OnSuccessGeneric_ShouldInvokeAsyncActionWithValue_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public async Task ShouldInvokeAsyncActionWithValue_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -122,8 +122,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public void OnSuccessGeneric_ShouldInvokeActionWithErrors_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public void ShouldInvokeActionWithSuccesses_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -142,8 +142,8 @@ public class OnSuccessT(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(OnSuccessTData))]
-    public async Task OnSuccessGeneric_ShouldInvokeAsyncActionWithErrors_IfResultIsSuccess(Result<int> result, bool expectedActionInvoked)
+    [ClassData(typeof(OnSuccessGenericData))]
+    public async Task ShouldInvokeAsyncActionWithSuccesses_WhenResultIsSuccess(Result<int> result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -161,4 +161,28 @@ public class OnSuccessT(ITestOutputHelper output)
         // Assert
         actionInvoked.ShouldBe(expectedActionInvoked);
     }
+
+    [Fact]
+    public void ShouldThrow_WhenActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Action)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenGenericActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Action<int>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Func<Task>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenGenericAsyncActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Func<int, Task>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenActionWithSuccessesIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Action<IEnumerable<ISuccess>>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionWithSuccessesIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok(420).OnSuccess((Func<IEnumerable<ISuccess>, Task>)null!));
 }

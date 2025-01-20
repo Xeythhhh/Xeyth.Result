@@ -6,11 +6,11 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class TryTask : TestBase
+public class TryAsync : TestBase
 {
     public record TestCase(Func<Task<Result>> Func, bool ExpectedSuccess, bool ExpectedFuncInvoked, bool ExpectedExceptionHandlerInvoked, bool UseDefaultExceptionHandler);
 
-    public sealed class TryTaskData : IEnumerable<object[]>
+    public sealed class TryAsyncData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -52,8 +52,8 @@ public class TryTask : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryTaskData))]
-    public async Task Try_FuncTask_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryAsyncData))]
+    public async Task ShouldInvokeAsyncAction_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -81,8 +81,8 @@ public class TryTask : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryTaskData))]
-    public async Task Try_FuncTaskResult_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryAsyncData))]
+    public async Task ShouldInvokeAsyncActionWithReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -110,12 +110,10 @@ public class TryTask : TestBase
     }
 
     [Fact]
-    public async Task Try_FuncTask_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
-        await ThrowsTask(() => Result.Try((Func<Task>)null!), Settings)
-            .IgnoreStackTrace();
+    public async Task ShouldThrowArgumentNullException_WhenAsyncActionIsNull() =>
+        await Should.ThrowAsync<ArgumentNullException>(() => Result.Try((Func<Task>)null!));
 
     [Fact]
-    public async Task Try_FuncTaskResult_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
-        await ThrowsTask(() => Result.Try((Func<Task<Result>>)null!), Settings)
-            .IgnoreStackTrace();
+    public async Task ShouldThrowArgumentNullException_WhenAsyncActionWithReturnValueIsNull() =>
+        await Should.ThrowAsync<ArgumentNullException>(() => Result.Try((Func<Task<Result>>)null!));
 }

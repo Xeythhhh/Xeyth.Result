@@ -9,16 +9,20 @@ public partial class Result
     /// <returns>The calling <see cref="Result"/>.</returns>
     public Result OnSuccess(Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsSuccess) action();
         return this;
     }
 
-    /// <summary>Executes the specified asynchronous <paramref name="func"/> if the <see cref="Result"/> is successful. Returns the calling <see cref="Result"/>.</summary>
-    /// <param name="func">The asynchronous function to execute if the <see cref="Result"/> is successful.</param>
+    /// <summary>Executes the specified asynchronous <paramref name="action"/> if the <see cref="Result"/> is successful. Returns the calling <see cref="Result"/>.</summary>
+    /// <param name="action">The asynchronous function to execute if the <see cref="Result"/> is successful.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing the calling <see cref="Result"/>.</returns>
-    public async Task<Result> OnSuccess(Func<Task> func)
+    public async Task<Result> OnSuccess(Func<Task> action)
     {
-        if (IsSuccess) await func().ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(action);
+
+        if (IsSuccess) await action().ConfigureAwait(false);
         return this;
     }
 
@@ -27,16 +31,20 @@ public partial class Result
     /// <returns>The calling <see cref="Result"/>.</returns>
     public Result OnSuccess(Action<IEnumerable<ISuccess>> action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsSuccess) action(Successes);
         return this;
     }
 
-    /// <summary>Executes the specified asynchronous <paramref name="func"/> with the successes if the <see cref="Result"/> is successful. Returns the calling <see cref="Result"/>.</summary>
-    /// <param name="func">The asynchronous function to execute with the successes if the <see cref="Result"/> is successful.</param>
+    /// <summary>Executes the specified asynchronous <paramref name="action"/> with the successes if the <see cref="Result"/> is successful. Returns the calling <see cref="Result"/>.</summary>
+    /// <param name="action">The asynchronous function to execute with the successes if the <see cref="Result"/> is successful.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing the calling <see cref="Result"/>.</returns>
-    public async Task<Result> OnSuccess(Func<IEnumerable<ISuccess>, Task> func)
+    public async Task<Result> OnSuccess(Func<IEnumerable<ISuccess>, Task> action)
     {
-        if (IsSuccess) await func(Successes).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(action);
+
+        if (IsSuccess) await action(Successes).ConfigureAwait(false);
         return this;
     }
 }

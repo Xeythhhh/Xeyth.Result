@@ -9,6 +9,8 @@ public partial class Result<TValue>
     /// <returns>The calling <see cref="Result{TValue}"/>.</returns>
     public Result<TValue> OnError(Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsFailed) action();
         return this;
     }
@@ -18,6 +20,8 @@ public partial class Result<TValue>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing the calling <see cref="Result{TValue}"/>.</returns>
     public async Task<Result<TValue>> OnError(Func<Task> action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsFailed) await action().ConfigureAwait(false);
         return this;
     }
@@ -27,6 +31,8 @@ public partial class Result<TValue>
     /// <returns>The calling <see cref="Result{TValue}"/>.</returns>
     public Result<TValue> OnError(Action<IEnumerable<IError>> action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsFailed) action(Errors);
         return this;
     }
@@ -36,6 +42,8 @@ public partial class Result<TValue>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing the calling <see cref="Result{TValue}"/>.</returns>
     public async Task<Result<TValue>> OnError(Func<IEnumerable<IError>, Task> action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         if (IsFailed) await action(Errors).ConfigureAwait(false);
         return this;
     }

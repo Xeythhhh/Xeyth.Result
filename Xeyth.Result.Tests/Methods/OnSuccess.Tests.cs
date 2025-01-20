@@ -53,7 +53,7 @@ public class OnSuccess(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public void OnSuccess_ShouldInvokeAction_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public void ShouldInvokeAction_WhenResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -68,7 +68,7 @@ public class OnSuccess(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public async Task OnSuccess_ShouldInvokeAsyncAction_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public async Task ShouldInvokeAsyncAction_WhenResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -87,7 +87,7 @@ public class OnSuccess(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public void OnSuccess_ShouldInvokeActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public void ShouldInvokeActionWithSuccesses_WhenResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -107,7 +107,7 @@ public class OnSuccess(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnSuccessData))]
-    public async Task OnSuccess_ShouldInvokeAsyncActionWithErrors_IfResultIsSuccess(Result result, bool expectedActionInvoked)
+    public async Task ShouldInvokeAsyncActionWithSuccesses_WhenResultIsSuccess(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -125,4 +125,20 @@ public class OnSuccess(ITestOutputHelper output)
         // Assert
         actionInvoked.ShouldBe(expectedActionInvoked);
     }
+
+    [Fact]
+    public void ShouldThrow_WhenActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnSuccess((Action)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnSuccess((Func<Task>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenActionWithSuccessesIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnSuccess((Action<IEnumerable<ISuccess>>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionWithSuccessesIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnSuccess((Func<IEnumerable<ISuccess>, Task>)null!));
 }

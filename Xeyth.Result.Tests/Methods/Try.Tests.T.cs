@@ -6,11 +6,11 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class TryT : TestBase
+public class TryGeneric : TestBase
 {
     public record TestCase(Func<Result<int>> Func, bool ExpectedSuccess, bool ExpectedFuncInvoked, bool ExpectedExceptionHandlerInvoked, bool UseDefaultExceptionHandler);
 
-    public sealed class TryTData : IEnumerable<object[]>
+    public sealed class TryGenericData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -52,8 +52,8 @@ public class TryT : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryTData))]
-    public void Try_Func_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryGenericData))]
+    public void ShouldInvokeActionWithReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -81,8 +81,8 @@ public class TryT : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryTData))]
-    public void Try_FuncResult_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryGenericData))]
+    public void ShouldInvokeActionWithResultReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -110,11 +110,10 @@ public class TryT : TestBase
     }
 
     [Fact]
-    public void Try_Func_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
+    public void ShouldThrowArgumentNullException_WhenActionWithReturnValueIsNull() =>
         Should.Throw<ArgumentNullException>(() => Result.Try((Func<int>)null!));
 
     [Fact]
-    public void Try_Func_ShouldThrowArgumentNullException_WhenResultFuncIsNull() =>
-        Throws(() => Result.Try((Func<Result<int>>)null!), Settings)
-            .IgnoreStackTrace();
+    public void ShouldThrowArgumentNullException_WhenActionWithResultReturnValueIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Try((Func<Result<int>>)null!));
 }

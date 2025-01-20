@@ -1,39 +1,38 @@
 ﻿using Xeyth.Result.Reasons;
 
-namespace Xeyth.Result.Tests.Methods
+namespace Xeyth.Result.Tests.Methods;
+
+public class OkIfValueTask : TestBase
 {
-    public class OkIfValueTask : TestBase
-    {
-        [Fact]
-        public Task ShouldReturnSuccessWhenValueTaskPredicateIsTrue() =>
-            Verify(Result.OkIf(ValueTask.FromResult(true), "Error"), Settings);
+    [Fact]
+    public Task ShouldReturnSuccess_WhenValueTaskPredicateIsTrue() =>
+        Verify(Result.OkIf(ValueTask.FromResult(true), "Error"), Settings);
 
-        [Fact]
-        public Task ShouldReturnFailureWhenValueTaskPredicateIsFalse() =>
-            Verify(Result.OkIf(ValueTask.FromResult(false), "Error"), Settings);
+    [Fact]
+    public Task ShouldReturnFailure_WhenValueTaskPredicateIsFalse() =>
+        Verify(Result.OkIf(ValueTask.FromResult(false), "Error"), Settings);
 
-        [Fact]
-        public Task ShouldReturnSuccessWhenPredicateIsTrueAndValueTaskErrorMessage() =>
-            Verify(Result.OkIf(true, ValueTask.FromResult("Error")), Settings);
+    [Fact]
+    public Task ShouldReturnSuccess_WhenPredicateIsTrue_AndValueTaskErrorMessage() =>
+        Verify(Result.OkIf(true, ValueTask.FromResult("Error")), Settings);
 
-        [Fact]
-        public Task ShouldReturnFailureWhenPredicateIsFalseAndValueTaskErrorMessage() =>
-            Verify(Result.OkIf(false, ValueTask.FromResult("Error")), Settings);
+    [Fact]
+    public Task ShouldReturnFailure_WhenPredicateIsFalse_AndValueTaskErrorMessage() =>
+        Verify(Result.OkIf(false, ValueTask.FromResult("Error")), Settings);
 
-        [Fact]
-        public Task ShouldReturnSuccessWithValueTaskError() =>
-            Verify(Result.OkIf(ValueTask.FromResult(true), ValueTask.FromResult(Error.DefaultFactory("Task error"))), Settings);
+    [Fact]
+    public Task ShouldReturnSuccess_WhenInvokedWithValueTaskError() =>
+        Verify(Result.OkIf(ValueTask.FromResult(true), ValueTask.FromResult(Error.DefaultFactory("Task error"))), Settings);
 
-        [Fact]
-        public Task ShouldReturnFailureWithValueTaskError() =>
-            Verify(Result.OkIf(ValueTask.FromResult(false), ValueTask.FromResult(Error.DefaultFactory("Task error"))), Settings);
+    [Fact]
+    public Task ShouldReturnFailure_WhenInvokedWithValueTaskError() =>
+        Verify(Result.OkIf(ValueTask.FromResult(false), ValueTask.FromResult(Error.DefaultFactory("Task error"))), Settings);
 
-        [Fact]
-        public Task ShouldReturnSuccessWhenValueTaskPredicateIsTrueWithGenericError() =>
-            Verify(Result.OkIf(ValueTask.FromResult(true), new Error("Task error")), Settings);
+    [Fact]
+    public Task ShouldReturnSuccess_WhenValueTaskPredicateIsTrueWithGenericError() =>
+        Verify(Result.OkIf(ValueTask.FromResult(true), new Error("Task error")), Settings);
 
-        [Fact]
-        public Task ShouldReturnFailureWhenValueTaskPredicateIsFalseWithGenericError() =>
-            Verify(Result.OkIf(ValueTask.FromResult(false), new Error("Task error")), Settings);
-    }
+    [Fact]
+    public Task ShouldReturnFailure_WhenValueTaskPredicateIsFalseWithGenericError() =>
+        Verify(Result.OkIf(ValueTask.FromResult(false), new Error("Task error")), Settings);
 }

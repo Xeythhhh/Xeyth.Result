@@ -6,7 +6,7 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class TryValueTaskT : TestBase
+public class TryValueTaskGeneric : TestBase
 {
     public record TestCase(
         Func<ValueTask<Result<int>>> Func,
@@ -16,7 +16,7 @@ public class TryValueTaskT : TestBase
         bool ExpectedExceptionHandlerInvoked,
         bool UseDefaultExceptionHandler);
 
-    public sealed class TryValueTaskTData : IEnumerable<object[]>
+    public sealed class TryValueTaskGenericData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -61,8 +61,8 @@ public class TryValueTaskT : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryValueTaskTData))]
-    public async Task Try_FuncValueTaskT_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryValueTaskGenericData))]
+    public async Task ShouldInvokeValueTaskActionWithReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -93,8 +93,8 @@ public class TryValueTaskT : TestBase
     }
 
     [Theory]
-    [ClassData(typeof(TryValueTaskTData))]
-    public async Task Try_FuncValueTaskResult_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    [ClassData(typeof(TryValueTaskGenericData))]
+    public async Task ShouldInvokeValueTaskActionWithResultReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -125,12 +125,12 @@ public class TryValueTaskT : TestBase
     }
 
     [Fact]
-    public async Task Try_FuncValueTaskT_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
+    public async Task ShouldThrowArgumentNullException_WhenValueTaskActionWithReturnValueIsNull() =>
         await ThrowsValueTask(() => Result.Try((Func<ValueTask<int>>)null!), Settings)
             .IgnoreStackTrace();
 
     [Fact]
-    public async Task Try_FuncValueTaskResultT_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
+    public async Task ShouldThrowArgumentNullException_WhenValueTaskActionWithResultReturnValueIsNull() =>
         await ThrowsValueTask(() => Result.Try((Func<ValueTask<Result<int>>>)null!), Settings)
             .IgnoreStackTrace();
 }

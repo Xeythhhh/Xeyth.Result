@@ -53,7 +53,7 @@ public class TryValueTask : TestBase
 
     [Theory]
     [ClassData(typeof(TryValueTaskData))]
-    public async Task Try_FuncValueTaskResult_ShouldInvokeFuncAndExceptionHandlerCorrectly(TestCase testCase)
+    public async Task ShouldInvokeValueTaskActionWithResultReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -81,7 +81,7 @@ public class TryValueTask : TestBase
     }
 
     [Fact]
-    public async Task Try_FuncValueTaskResult_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
+    public async Task ShouldThrowArgumentNullException_WhenValueTaskActionWithResultReturnValueIsNull() =>
         await ThrowsValueTask(() => Result.Try((Func<ValueTask<Result>>)null!), Settings)
             .IgnoreStackTrace();
 }

@@ -35,7 +35,7 @@ public class OnError(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnErrorData))]
-    public void OnError_ShouldInvokeAction_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    public void ShouldInvokeAction_WhenResultIsFailure(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -50,7 +50,7 @@ public class OnError(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnErrorData))]
-    public async Task OnError_ShouldInvokeAsyncAction_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    public async Task ShouldInvokeAsyncAction_WhenResultIsFailure(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -69,7 +69,7 @@ public class OnError(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnErrorData))]
-    public void OnError_ShouldInvokeActionWithErrors_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    public void ShouldInvokeActionWithErrors_WhenResultIsFailure(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -89,7 +89,7 @@ public class OnError(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(OnErrorData))]
-    public async Task OnError_ShouldInvokeAsyncActionWithErrors_IfResultIsFailure(Result result, bool expectedActionInvoked)
+    public async Task ShouldInvokeAsyncActionWithErrors_WhenResultIsFailure(Result result, bool expectedActionInvoked)
     {
         // Arrange
         bool actionInvoked = false;
@@ -107,4 +107,20 @@ public class OnError(ITestOutputHelper output)
         // Assert
         actionInvoked.ShouldBe(expectedActionInvoked);
     }
+
+    [Fact]
+    public void ShouldThrow_WhenActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnError((Action)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnError((Func<Task>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenActionWithErrorsIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnError((Action<IEnumerable<IError>>)null!));
+
+    [Fact]
+    public void ShouldThrow_WhenAsyncActionWithErrorsIsNull() =>
+        Should.Throw<ArgumentNullException>(() => Result.Ok().OnError((Func<IEnumerable<IError>, Task>)null!));
 }

@@ -53,7 +53,7 @@ public class Try : TestBase
 
     [Theory]
     [ClassData(typeof(TryData))]
-    public void Try_Action_ShouldInvokeActionAndExceptionHandlerCorrectly(TestCase testCase)
+    public void ShouldInvokeAction_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool actionInvoked = false;
@@ -82,7 +82,7 @@ public class Try : TestBase
 
     [Theory]
     [ClassData(typeof(TryData))]
-    public void Try_Func_ShouldInvokeActionAndExceptionHandlerCorrectly(TestCase testCase)
+    public void ShouldInvokeActionWithReturnValue_AndExceptionHandlerCorrectly(TestCase testCase)
     {
         // Arrange
         bool funcInvoked = false;
@@ -110,11 +110,11 @@ public class Try : TestBase
     }
 
     [Fact]
-    public void Try_Action_ShouldThrowArgumentNullException_WhenActionIsNull() =>
+    public void ShouldThrowArgumentNullException_WhenActionIsNull() =>
         Should.Throw<ArgumentNullException>(() => Result.Try((Action)null!));
 
     [Fact]
-    public void Try_Func_ShouldThrowArgumentNullException_WhenFuncIsNull() =>
+    public void ShouldThrowArgumentNullException_WhenActionWithReturnValueIsNull() =>
         Throws(() => Result.Try((Func<Result>)null!), Settings)
             .IgnoreStackTrace();
 }
