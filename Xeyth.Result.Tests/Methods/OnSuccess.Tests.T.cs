@@ -15,12 +15,41 @@ public class OnSuccessT(ITestOutputHelper output)
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { Result.Ok(_testValue), true };
-            yield return new object[] { Result.Ok(_testValue).WithSuccess("Some success"), true };
-            yield return new object[] { Result.Ok(_testValue).WithError("Test Error"), false };
-            yield return new object[] { Result.Ok(_testValue).WithError("Test Error").WithSuccess("Some success"), false };
-            yield return new object[] { Result.Fail("Test Error"), false };
-            yield return new object[] { Result.Fail("Test Error").WithSuccess("Some success"), false };
+            yield return new object[]
+            {
+                Result.Ok(_testValue),
+                true
+            };
+
+            yield return new object[]
+            {
+                Result.Ok(_testValue).WithSuccess("Some success"),
+                true
+            };
+
+            yield return new object[]
+            {
+                Result.Ok(_testValue).WithError("Test Error"),
+                false
+            };
+
+            yield return new object[]
+            {
+                Result.Ok(_testValue).WithError("Test Error").WithSuccess("Some success"),
+                false
+            };
+
+            yield return new object[]
+            {
+                Result.Fail("Test Error"),
+                false
+            };
+
+            yield return new object[]
+            {
+                Result.Fail("Test Error").WithSuccess("Some success"),
+                false
+            };
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ReasonStringBuilderTests : SnapshotTestBase
+public class ReasonStringBuilderTests : TestBase
 {
     [Fact]
     public async Task ShouldSetReasonType() =>

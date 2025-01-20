@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods
 {
-    public class OkIfTaskT : SnapshotTestBase
+    public class OkIfTaskT : TestBase
     {
         [Fact]
         public Task ShouldReturnSuccessWhenIsSuccessIsTrue() =>

@@ -15,9 +15,23 @@ public class OnErrorT(ITestOutputHelper output)
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { Result.Ok(_testValue), false };
-            yield return new object[] { Result.Ok(_testValue).WithError("Test Error"), true };
-            yield return new object[] { Result.Fail<int>("Test Error"), true };
+            yield return new object[]
+            {
+                Result.Ok(_testValue),
+                false
+            };
+
+            yield return new object[]
+            {
+                Result.Ok(_testValue).WithError("Test Error"),
+                true
+            };
+
+            yield return new object[]
+            {
+                Result.Fail<int>("Test Error"),
+                true
+            };
         }
     }
 

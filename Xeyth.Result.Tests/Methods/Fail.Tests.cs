@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class Fail : SnapshotTestBase
+public class Fail : TestBase
 {
     [Fact]
     public Task ShouldReturnFailureWhenErrorMessageIsProvided() =>

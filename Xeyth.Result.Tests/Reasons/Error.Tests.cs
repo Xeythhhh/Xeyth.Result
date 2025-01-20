@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ErrorTests : SnapshotTestBase
+public class ErrorTests : TestBase
 {
     [Fact]
     public Task ShouldCreateErrorWithMessage() =>

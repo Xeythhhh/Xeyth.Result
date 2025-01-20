@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class SuccessTests : SnapshotTestBase
+public class SuccessTests : TestBase
 {
     [Fact]
     public async Task ShouldCreateSuccessWithMessage() =>

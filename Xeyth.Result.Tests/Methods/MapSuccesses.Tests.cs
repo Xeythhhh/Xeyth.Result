@@ -8,7 +8,7 @@ namespace Xeyth.Result.Tests.Methods
         public string SomeCustomSuccessField { get; set; } = "This is a custom Success implementation";
     }
 
-    public class MapSuccesses : SnapshotTestBase
+    public class MapSuccesses : TestBase
     {
         [Fact]
         public Task ShouldMapSuccessesToCustomSuccess() =>

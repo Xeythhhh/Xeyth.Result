@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods
 {
-    public class MapErrors : SnapshotTestBase
+    public class MapErrors : TestBase
     {
         // Sample custom error for mapping tests
         public class CustomError(string message) : Error(message)
@@ -27,7 +27,7 @@ namespace Xeyth.Result.Tests.Methods
         [Fact]
         public Task ShouldNotChangeSuccessfulResult() =>
             Verify(
-                Result.Ok().MapErrors(e => new Error("Should not map")),
+                Result.Ok().MapErrors(_ => new Error("Should not map")),
                 Settings);
 
         [Fact]

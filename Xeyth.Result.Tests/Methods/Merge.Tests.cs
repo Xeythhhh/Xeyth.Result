@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods
 {
-    public class Merge : SnapshotTestBase
+    public class Merge : TestBase
     {
         [Fact]
         public Task ShouldMergeFailures() =>
@@ -31,7 +31,7 @@ namespace Xeyth.Result.Tests.Methods
 
         [Fact]
         public Task ShouldHandleEmptyInput() =>
-            Verify(Result.Merge(Enumerable.Empty<ResultBase>()),Settings);
+            Verify(Result.Merge(Enumerable.Empty<ResultBase>()), Settings);
 
         [Fact]
         public Task ShouldThrowForNullInput() =>

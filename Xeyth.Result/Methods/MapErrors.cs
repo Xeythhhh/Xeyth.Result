@@ -23,7 +23,7 @@ public partial class Result
         List<IError> mappedErrors = [];
         foreach (IError error in Errors)
             mappedErrors.Add(await errorMapper(error).ConfigureAwait(false));
-        
+
         return new Result()
             .WithErrors(mappedErrors)
             .WithSuccesses(Successes);

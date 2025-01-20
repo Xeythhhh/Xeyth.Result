@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ExceptionalErrorTests : SnapshotTestBase
+public class ExceptionalErrorTests : TestBase
 {
     [Fact]
     public async Task ShouldCreateExceptionalErrorWithMessageAndException() =>

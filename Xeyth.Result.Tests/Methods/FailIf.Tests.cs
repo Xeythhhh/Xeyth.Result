@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods
 {
-    public class FailIf : SnapshotTestBase
+    public class FailIf : TestBase
     {
         [Fact]
         public Task ShouldReturnFailureWhenIsFailureIsTrue() =>

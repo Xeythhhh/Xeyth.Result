@@ -1,9 +1,9 @@
 ﻿namespace Xeyth.Result.Tests;
-public abstract class SnapshotTestBase
+public abstract class TestBase
 {
     internal VerifySettings Settings { get; set; }
 
-    protected SnapshotTestBase()
+    protected TestBase()
     {
         Settings = new VerifySettings();
         Settings.UseDirectory(".Snapshots");
