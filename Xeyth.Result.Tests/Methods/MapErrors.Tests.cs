@@ -32,6 +32,12 @@ public class MapErrors : TestBase
             Settings);
 
     [Fact]
+    public async Task ShouldNotChangeSuccessfulResultAsync() =>
+        await Verify(
+            await Result.Ok().MapErrorsAsync(_ => Task.FromResult((IError)new Error("Should not map"))),
+            Settings);
+
+    [Fact]
     public async Task ShouldMapErrorsAsynchronously_ToCustomError() =>
         await Verify(
             await Result.Fail("Original Error").MapErrorsAsync(

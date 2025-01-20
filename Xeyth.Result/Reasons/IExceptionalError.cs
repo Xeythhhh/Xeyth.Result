@@ -1,6 +1,6 @@
 ﻿namespace Xeyth.Result.Reasons;
 
-/// <summary> Represents an error that is associated with an <see cref="Exception"/>, 
+/// <summary> Represents an error that is associated with an <see cref="Exception"/>,
 /// extending <see cref="IError"/> with additional exception-specific details.</summary>
 public interface IExceptionalError : IError
 {

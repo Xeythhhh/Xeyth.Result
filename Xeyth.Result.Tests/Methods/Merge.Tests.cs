@@ -25,6 +25,12 @@ public class Merge : TestBase
             Settings);
 
     [Fact]
+    public Task ShouldMergeIEnumerableSuccessesWithValue() =>
+        Verify(
+            Result.Merge((IEnumerable<Result<int>>)[Result.Ok(420), Result.Ok(69)]),
+            Settings);
+
+    [Fact]
     public Task ShouldMergeMixedResults() =>
         Verify(
             Result.Merge(Result.Ok(), Result.Ok(420), Result.Fail("Error 3")),

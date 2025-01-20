@@ -1,0 +1,12 @@
+﻿{
+  Value: [
+    420,
+    69
+  ],
+  ValueOrDefault: [
+    420,
+    69
+  ],
+  IsFailed: false,
+  IsSuccess: true
+}

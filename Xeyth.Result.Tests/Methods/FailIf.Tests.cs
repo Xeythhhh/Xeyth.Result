@@ -13,12 +13,20 @@ public class FailIf : TestBase
         Verify(Result.FailIf(false, "Error"), Settings);
 
     [Fact]
-    public Task ShouldReturnFailure_WhenIsFailureIsTrueWithErrorFactory() =>
+    public Task ShouldReturnFailure_WhenIsFailureIsTrueWithStringErrorFactory() =>
         Verify(Result.FailIf(true, () => "Error"), Settings);
 
     [Fact]
-    public Task ShouldReturnSuccess_WhenIsFailureIsFalseWithErrorFactory() =>
+    public Task ShouldReturnSuccess_WhenIsFailureIsFalseWithStringErrorFactory() =>
         Verify(Result.FailIf(false, () => "Error"), Settings);
+
+    [Fact]
+    public Task ShouldReturnFailure_WhenIsFailureIsTrueWithIErrorErrorFactory() =>
+        Verify(Result.FailIf(true, () => new Error("IError")), Settings);
+
+    [Fact]
+    public Task ShouldReturnSuccess_WhenIsFailureIsFalseWithIErrorErrorFactory() =>
+        Verify(Result.FailIf(false, () => new Error("IError")), Settings);
 
     [Fact]
     public Task ShouldReturnFailure_WhenIsFailureIsTrueWithError() =>

@@ -5,7 +5,7 @@ namespace Xeyth.Result;
 
 public partial class Result
 {
-    /// <summary>Creates a success or failure result depending on the <paramref name="isSuccess"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="isSuccess"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
     /// <param name="isSuccess">Determines whether the result should be successful or failed.</param>
@@ -14,7 +14,7 @@ public partial class Result
     public static Result<TValue> OkIf<TValue>(TValue value, bool isSuccess, Func<string> errorMessageFactory) =>
         OkIf(value, isSuccess, errorMessageFactory());
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="isSuccess"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="isSuccess"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
     /// <param name="isSuccess">Determines whether the result should be successful or failed.</param>
@@ -23,7 +23,7 @@ public partial class Result
     public static Result<TValue> OkIf<TValue>(TValue value, bool isSuccess, string errorMessage) =>
         OkIf(value, isSuccess, Error.DefaultFactory(errorMessage));
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="isSuccess"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="isSuccess"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <typeparam name="TError">The type of the error returned if the result fails.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
@@ -34,7 +34,7 @@ public partial class Result
         where TError : IError =>
         OkIf(value, isSuccess, () => error);
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="isSuccess"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="isSuccess"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <typeparam name="TError">The type of the error returned if the result fails.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
@@ -45,7 +45,7 @@ public partial class Result
         where TError : IError =>
         OkIf(value, () => isSuccess, errorFactory);
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="predicate"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="predicate"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
     /// <param name="predicate">A function to determine whether the result should be successful or failed.</param>
@@ -54,7 +54,7 @@ public partial class Result
     public static Result<TValue> OkIf<TValue>(TValue value, Func<bool> predicate, Func<string> errorMessageFactory) =>
         OkIf(value, predicate, errorMessageFactory());
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="predicate"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="predicate"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
     /// <param name="predicate">A function to determine whether the result should be successful or failed.</param>
@@ -63,7 +63,7 @@ public partial class Result
     public static Result<TValue> OkIf<TValue>(TValue value, Func<bool> predicate, string errorMessage) =>
         OkIf(value, predicate, Error.DefaultFactory(errorMessage));
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="predicate"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="predicate"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <typeparam name="TError">The type of the error returned if the result fails.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
@@ -74,7 +74,7 @@ public partial class Result
         where TError : IError =>
         OkIf(value, predicate, () => error);
 
-    /// <summary>Creates a success or failure result depending on the <paramref name="predicate"/> parameter.</summary>
+    /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="predicate"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>   /// <typeparam name="TError">The type of the error returned if the result fails.</typeparam>
     /// <param name="value">The value to include in the result if successful.</param>
     /// <param name="predicate">A function to determine whether the result should be successful or failed.</param>

@@ -15,6 +15,7 @@ public partial class Result
     /// <summary>Asynchronously maps all <see cref="IError"/> instances in the <see cref="Result"/> using the specified <paramref name="errorMapper"/>.</summary>
     /// <param name="errorMapper">An asynchronous function to transform each <see cref="IError"/> in the result.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing a new <see cref="Result"/> with mapped errors.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="errorMapper"/> is <see langword="null"/>.</exception>
     public async Task<Result> MapErrorsAsync(Func<IError, Task<IError>> errorMapper)
     {
         if (IsSuccess) return this;

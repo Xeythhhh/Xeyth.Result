@@ -35,6 +35,7 @@ public partial class Result
         Ok().WithReasons(results.SelectMany(result => result.Reasons));
 
     /// <summary>Internally merges multiple <see cref="Result{TValue}"/> objects into a single <see cref="Result{TValue}"/> containing a list of values.</summary>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="results"/> collection is <see langword="null"/>.</exception>
     internal static Result<IEnumerable<TValue>> MergeInternalWithValue<TValue>(
         IEnumerable<Result<TValue>> results)
     {
