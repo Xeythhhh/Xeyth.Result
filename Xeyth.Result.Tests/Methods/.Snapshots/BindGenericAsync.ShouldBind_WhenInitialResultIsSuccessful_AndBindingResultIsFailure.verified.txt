@@ -1,0 +1,22 @@
+﻿{
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: [
+    {
+      Message: Binding Result Error
+    },
+    {
+      Message: Initial Result Success
+    }
+  ],
+  Errors: [
+    {
+      Message: Binding Result Error
+    }
+  ],
+  Successes: [
+    {
+      Message: Initial Result Success
+    }
+  ]
+}

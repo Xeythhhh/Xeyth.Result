@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OkIfValueTaskGeneric : TestBase
+public class OkIfGenericValueTask : TestBase
 {
     [Fact]
     public Task ShouldReturnSuccess_WhenIsSuccessIsTrue() =>

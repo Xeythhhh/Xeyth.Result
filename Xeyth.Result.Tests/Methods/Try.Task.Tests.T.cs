@@ -6,7 +6,7 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class TryAsyncGeneric : TestBase
+public class TryGenericAsync : TestBase
 {
     public record TestCase(Func<Task<int>> Func, int ExpectedValue, bool ExpectedSuccess, bool ExpectedFuncInvoked, bool ExpectedExceptionHandlerInvoked, bool UseDefaultExceptionHandler);
 

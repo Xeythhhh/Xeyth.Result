@@ -6,7 +6,7 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class TryValueTaskGeneric : TestBase
+public class TryGenericValueTask : TestBase
 {
     public record TestCase(
         Func<ValueTask<Result<int>>> Func,

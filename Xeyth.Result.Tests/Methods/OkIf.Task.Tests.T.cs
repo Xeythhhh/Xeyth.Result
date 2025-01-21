@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class OkIfAsyncGeneric : TestBase
+public class OkIfGenericAsync : TestBase
 {
     [Fact]
     public Task ShouldReturnSuccess_WhenIsSuccessIsTrue() =>

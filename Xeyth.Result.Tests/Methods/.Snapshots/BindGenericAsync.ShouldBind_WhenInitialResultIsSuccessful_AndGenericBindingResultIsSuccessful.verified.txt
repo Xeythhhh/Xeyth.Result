@@ -1,0 +1,22 @@
+﻿{
+  Value: 69,
+  ValueOrDefault: 69,
+  IsFailed: false,
+  IsSuccess: true,
+  Reasons: [
+    {
+      Message: Binding Result Success
+    },
+    {
+      Message: Initial Result Success
+    }
+  ],
+  Successes: [
+    {
+      Message: Binding Result Success
+    },
+    {
+      Message: Initial Result Success
+    }
+  ]
+}
