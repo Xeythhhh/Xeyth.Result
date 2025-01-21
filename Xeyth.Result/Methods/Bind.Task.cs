@@ -1,4 +1,6 @@
-﻿namespace Xeyth.Result;
+﻿using System.Runtime.CompilerServices;
+
+namespace Xeyth.Result;
 
 public partial class Result
 {
@@ -6,6 +8,7 @@ public partial class Result
     /// <param name="bind">The binding function.</param>
     /// <returns>The new <see cref="Result"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
+    [OverloadResolutionPriority(1)]
     public async Task<Result> Bind(Func<Task<Result>> bind)
     {
         ArgumentNullException.ThrowIfNull(bind);
@@ -20,6 +23,7 @@ public partial class Result
     /// <param name="bind">The binding function.</param>
     /// <returns>The new <see cref="Result"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
+    [OverloadResolutionPriority(1)]
     public async Task<Result<TNewValue>> Bind<TNewValue>(Func<Task<Result<TNewValue>>> bind)
     {
         ArgumentNullException.ThrowIfNull(bind);
