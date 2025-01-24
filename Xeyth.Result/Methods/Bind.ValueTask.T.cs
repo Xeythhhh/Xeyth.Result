@@ -25,9 +25,10 @@ public partial class Result<TValue>
     /// <returns>A <see cref="ValueTask"/> containing the new <see cref="Result{TValue}"/> produced by the <paramref name="bind"/> function with the original <typeparamref name="TValue"/> value  if the current result is successful;
     /// otherwise, the current result.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
+    /// <remarks>This method delegates to <see cref="Bind(Func{TValue, ValueTask{Result}})"/>.</remarks>
     public async ValueTask<Result<TValue>> BindAndKeepValue(Func<TValue, ValueTask<Result>> bind) =>
         (await Bind(bind).ConfigureAwait(false))
-            .WithValue(Value);
+            .WithValue(IsSuccess ? Value : default!);
 
     /// <summary>Binds the current result to another <see cref="Result{TNewValue}"/> using the specified <paramref name="bind"/> <see cref="ValueTask"/> function with the current <see cref="Value"/>.</summary>
     /// <typeparam name="TNewValue">The type of the value encapsulated by the new result.</typeparam>

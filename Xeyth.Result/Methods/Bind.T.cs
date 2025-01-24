@@ -23,10 +23,10 @@ public partial class Result<TValue>
     /// <returns>A new <see cref="Result{TValue}"/> produced by the <paramref name="bind"/> function with the original <typeparamref name="TValue"/> value if the current result is successful;
     /// otherwise, the current result.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
-    public Result<TValue> BindAndKeepValue(Func<TValue, Result> bind) =>
-        bind(Value)
-            .WithValue(Value)
-            .WithReasons(Reasons);
+    /// <remarks>This method delegates to <see cref="Bind(Func{TValue, Result})"/>.</remarks>
+    public Result<TValue> BindAndKeepValue(Func<TValue, Result> bind) => Bind(bind)
+        .WithValue(IsSuccess ? Value : default!)
+        .WithReasons(Reasons);
 
     /// <summary>Binds the current result to another <see cref="Result{TNewValue}"/> using the specified <paramref name="bind"/> function with the current <see cref="Value"/>.</summary>
     /// <typeparam name="TNewValue">The type of the value encapsulated by the new result.</typeparam>

@@ -28,10 +28,11 @@ public partial class Result<TValue>
     /// <returns>A <see cref="Task"/> containing the new <see cref="Result{TValue}"/> produced by the <paramref name="bind"/> function with the original <typeparamref name="TValue"/> value if the current result is successful;
     /// otherwise, the current result.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
+    /// <remarks>This method delegates to <see cref="Bind(Func{TValue, Task{Result}})"/>.</remarks>
     [OverloadResolutionPriority(1)]
     public async Task<Result<TValue>> BindAndKeepValue(Func<TValue, Task<Result>> bind) =>
-        (await bind(Value).ConfigureAwait(false))
-            .WithValue(Value);
+        (await Bind(bind).ConfigureAwait(false))
+            .WithValue(IsSuccess ? Value : default!);
 
     /// <summary>Binds the current result to another <see cref="Result{TNewValue}"/> using the specified <paramref name="bind"/> asynchronous function with the current <see cref="Value"/>.</summary>
     /// <typeparam name="TNewValue">The type of the value encapsulated by the new result.</typeparam>

@@ -1,0 +1,34 @@
+﻿{
+  $type: Result<int>,
+  Value: 69,
+  IsFailed: false,
+  IsSuccess: true,
+  Reasons: {
+    $type: List<IReason>,
+    $values: [
+      {
+        $type: Success,
+        Message: Bound to new result,
+        Metadata: {
+          $type: Dictionary<string, object>
+        }
+      }
+    ]
+  },
+  Errors: {
+    $type: List<IError>,
+    $values: []
+  },
+  Successes: {
+    $type: List<ISuccess>,
+    $values: [
+      {
+        $type: Success,
+        Message: Bound to new result,
+        Metadata: {
+          $type: Dictionary<string, object>
+        }
+      }
+    ]
+  }
+}
