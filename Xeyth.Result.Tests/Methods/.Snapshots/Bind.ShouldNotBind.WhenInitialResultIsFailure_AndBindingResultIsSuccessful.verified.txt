@@ -1,0 +1,41 @@
+﻿{
+  $type: Result,
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: {
+    $type: List<IReason>,
+    $values: [
+      {
+        $type: Error,
+        Message: Initial Result Error,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  },
+  Errors: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: Error,
+        Message: Initial Result Error,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  },
+  Successes: {
+    $type: List<ISuccess>,
+    $values: []
+  }
+}
