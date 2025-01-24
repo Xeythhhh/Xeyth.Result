@@ -1,30 +1,32 @@
-﻿using Xeyth.Result.Reasons.Abstract;
+﻿using Shouldly;
+
 using Xeyth.Result.Reasons;
-using Xeyth.Result.Tests.Abstract;
-using Shouldly;
+using Xeyth.Result.Reasons.Abstract;
+using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests;
-public class ConversionGeneric : TestBase
+
+public class ConversionGeneric
 {
     [Fact]
-    public Task ShouldConvertSingleErrorExplicitly() => Verify((Result<int>)new Error("Error"));
+    public void ShouldConvertSingleErrorExplicitly() => Verify((Result<int>)new Error("Error"));
 
     [Fact]
-    public Task ShouldConvertSingleErrorImplicitly()
+    public void ShouldConvertSingleErrorImplicitly()
     {
         Result<int> result = new Error("Error");
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertErrorListExplicitly() => Verify((Result<int>)new List<IError>()
+    public void ShouldConvertErrorListExplicitly() => Verify((Result<int>)new List<IError>()
         {
             new Error("Error 1"),
             new CustomError("Error 2")
         });
 
     [Fact]
-    public Task ShouldConvertErrorListImplicitly()
+    public void ShouldConvertErrorListImplicitly()
     {
         Result<int> result = new List<IError>()
         {
@@ -32,37 +34,37 @@ public class ConversionGeneric : TestBase
             new CustomError("Error 2")
         };
 
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertToNonGenericResultExplicitly() => Verify((Result)Result.Ok(420));
+    public void ShouldConvertToNonGenericResultExplicitly() => Verify((Result)Result.Ok(420));
 
     [Fact]
-    public Task ShouldConvertToNonGenericResultImplicitly()
+    public void ShouldConvertToNonGenericResultImplicitly()
     {
         Result result = Result.Ok(420);
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertToGenericObjectResultExplicitly() => Verify((Result<object>)Result.Ok(420));
+    public void ShouldConvertToGenericObjectResultExplicitly() => Verify((Result<object>)Result.Ok(420));
 
     [Fact]
-    public Task ShouldConvertToGenericObjectResultImplicitly()
+    public void ShouldConvertToGenericObjectResultImplicitly()
     {
         Result<object> result = Result.Ok(420);
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertValueToGenericResultExplicitly() => Verify((Result<int>)420);
+    public void ShouldConvertValueToGenericResultExplicitly() => Verify((Result<int>)420);
 
     [Fact]
-    public Task ShouldConvertValueToGenericResultImplicitly()
+    public void ShouldConvertValueToGenericResultImplicitly()
     {
         Result<int> result = 420;
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]

@@ -1,4 +1,0 @@
-﻿{
-  IsFailed: false,
-  IsSuccess: true
-}

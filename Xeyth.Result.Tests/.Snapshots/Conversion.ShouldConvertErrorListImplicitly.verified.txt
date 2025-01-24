@@ -1,0 +1,65 @@
+﻿{
+  $type: Result,
+  IsFailed: true,
+  IsSuccess: false,
+  Reasons: {
+    $type: List<IReason>,
+    $values: [
+      {
+        $type: Error,
+        Message: Error 1,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      },
+      {
+        $type: CustomError,
+        SomeCustomErrorField: This is a custom Error implementation for testing,
+        Message: Error 2,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  },
+  Errors: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: Error,
+        Message: Error 1,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      },
+      {
+        $type: CustomError,
+        SomeCustomErrorField: This is a custom Error implementation for testing,
+        Message: Error 2,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  },
+  Successes: {
+    $type: List<ISuccess>,
+    $values: []
+  }
+}

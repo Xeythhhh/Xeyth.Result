@@ -1,13 +1,33 @@
 ﻿{
-  Message: Test error,
-  Reasons: [
-    {
-      Exception: {
-        $type: Exception,
-        Type: Exception,
-        Message: Test exception
-      },
-      Message: Test exception
-    }
-  ]
+  $type: Error,
+  Message: Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: ExceptionalError,
+        Exception: {
+          $type: Exception,
+          Type: Exception,
+          Message: Exception,
+          Data: {
+            $type: ListDictionaryInternal
+          },
+          InnerException: null,
+          HelpLink: null
+        },
+        Message: Exception,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  }
 }

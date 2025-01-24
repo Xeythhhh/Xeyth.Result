@@ -1,106 +1,91 @@
 ﻿using Shouldly;
 
+using Xeyth.Result.Extensions.Reasons;
 using Xeyth.Result.Reasons;
 using Xeyth.Result.Reasons.Abstract;
-using Xeyth.Result.Tests.Abstract;
-using Xeyth.Result.Extensions.Reasons;
+using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ErrorTests : TestBase
+public class ErrorTests
 {
     [Fact]
-    public Task ShouldCreateErrorWithMessage() =>
-        Verify(new Error("Error"));
+    public void ShouldCreateErrorWithMessage() => Verify(new Error("Error"));
 
     [Fact]
-    public Task ShouldAddSingleCause() =>
-        Verify(new Error("Error").CausedBy("Cause 1"));
+    public void ShouldAddSingleCause() => Verify(new Error("Error")
+        .CausedBy("Cause 1"));
 
     [Fact]
-    public Task ShouldAddSingleCauseFromConstructor() =>
-        Verify(new Error("Error", new Error("Cause 1")));
+    public void ShouldAddSingleCauseFromConstructor() => Verify(new Error("Error",
+        new Error("Cause 1")));
 
     [Fact]
-    public Task ShouldAddMultipleCauses() =>
-        Verify(new Error("Error")
-            .CausedBy("Cause 1")
-            .CausedBy("Cause 2"));
+    public void ShouldAddMultipleCauses() => Verify(new Error("Error")
+        .CausedBy("Cause 1")
+        .CausedBy("Cause 2"));
 
     [Fact]
-    public Task ShouldAddMultipleCausesStringEnumerable() =>
-        Verify(new Error("Error").CausedBy((IEnumerable<string>)[
+    public void ShouldAddMultipleCausesStringEnumerable() => Verify(new Error("Error")
+        .CausedBy((IEnumerable<string>)[
             "Cause 1",
             "Cause 2"]));
 
     [Fact]
-    public Task ShouldAddMultipleCausesStringParams() =>
-        Verify(new Error("Error")
-            .CausedBy("Cause 1", "Cause 2"));
+    public Task ShouldAddMultipleCausesStringParams() => Verify(new Error("Error")
+        .CausedBy("Cause 1", "Cause 2"));
 
     [Fact]
-    public Task ShouldAddMultipleCausesIErrorEnumerable() =>
-        Verify(new Error("Error")
-            .CausedBy((IEnumerable<IError>)[
-                new Error("Error 1"),
-                new Error("Error 2")]));
+    public void ShouldAddMultipleCausesIErrorEnumerable() => Verify(new Error("Error")
+        .CausedBy((IEnumerable<IError>)[
+            new Error("Error 1"),
+            new Error("Error 2")]));
 
     [Fact]
-    public Task ShouldAddMultipleCausesIErrorParams() =>
-        Verify(new Error("Error")
-            .CausedBy(new Error("Error 1"), new Error("Error 2")));
+    public void ShouldAddMultipleCausesIErrorParams() => Verify(new Error("Error")
+        .CausedBy(new Error("Error 1"), new Error("Error 2")));
 
     [Fact]
-    public Task ShouldAddExceptionAsCause() =>
-        Verify(new Error("Error")
-            .CausedBy(new Exception("Exception")));
+    public void ShouldAddExceptionAsCause() => Verify(new Error("Error")
+        .CausedBy(new Exception("Exception")));
 
     [Fact]
-    public Task ShouldAddMultipleNestedCauses() =>
-        Verify(new Error("Error")
-            .CausedBy(new Error("Cause 1")
-                .CausedBy("Cause 2 (Deep)"))
-            .CausedBy(new Exception("Exception")));
+    public void ShouldAddMultipleNestedCauses() => Verify(new Error("Error")
+        .CausedBy(new Error("Cause 1")
+            .CausedBy("Cause 2 (Deep)"))
+        .CausedBy(new Exception("Exception")));
 
     [Fact]
-    public Task ShouldAddMetadata() =>
-        Verify(new Error("Error")
-            .WithMetadata("Key", "Value"));
+    public void ShouldAddMetadata() => Verify(new Error("Error")
+        .WithMetadata("Key", "Value"));
 
     [Fact]
-    public Task ShouldAddMultipleMetadata() =>
-        Verify(new Error("Error")
-            .WithMetadata(new Dictionary<string, object>
-            {
-                { "Key1", "Value1" },
-                { "Key2", "Value2" }
-            }));
+    public void ShouldAddMultipleMetadata() => Verify(new Error("Error")
+        .WithMetadata(new Dictionary<string, object>
+        {
+            { "Key1", "Value1" },
+            { "Key2", "Value2" }
+        }));
 
     [Fact]
-    public Task ShouldReturnStringRepresentation() =>
-        Verify(new Error("Error")
-            .WithMetadata("Key", "Value")
-            .CausedBy("Cause 1")
-            .CausedBy(new Exception("Exception")).ToString());
+    public Task ShouldReturnStringRepresentation() => Verify(new Error("Error")
+        .WithMetadata("Key", "Value")
+        .CausedBy("Cause 1")
+        .CausedBy(new Exception("Exception"))
+        .ToString());
 
     [Fact]
-    public Task ShouldCreateErrorUsingDefaultFactory() =>
-        Verify(Error.Factory("Error from factory"));
+    public Task ShouldCreateErrorUsingDefaultFactory() => Verify(Error.Factory("Error from factory"));
 
     [Fact]
-    public void ShouldThrowWhenUsingDefaultFactoryWithNullInput() =>
-        Should.Throw<ArgumentNullException>(() => Error.Factory(null!));
+    public void ShouldThrowWhenUsingDefaultFactoryWithNullInput() => Should.Throw<ArgumentNullException>(() => Error.Factory(null!));
 
     [Fact]
-    public void ShouldThrowWhenTryingToOverrideFactoryWithNull() =>
-        Should.Throw<ArgumentNullException>(() => Error.Factory = null!);
+    public void ShouldThrowWhenTryingToOverrideFactoryWithNull() => Should.Throw<ArgumentNullException>(() => Error.Factory = null!);
 
     [Fact]
-    public async Task ShouldCreateErrorAfterOverridingFactory()
+    public void ShouldCreateErrorAfterOverridingFactory()
     {
-        // If this causes other tests to fail in the future, look into IAsynLifetime Setup/Teardown
-        // and disable parallelization on this test class
-
         // Arrange
 
         Func<string, IError> originalFactory = Error.Factory;
@@ -114,7 +99,7 @@ public class ErrorTests : TestBase
 
             // Assert
 
-            await Verify(error);
+            Verify(error);
         }
         finally
         {

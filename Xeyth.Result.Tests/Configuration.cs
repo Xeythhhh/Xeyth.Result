@@ -12,6 +12,12 @@ public class Configuration
         UseSourceFileRelativeDirectory(".Snapshots");
         VerifierSettings.IgnoreMembersThatThrow<FailedResultValueAccessException>();
         VerifierSettings.DontIgnoreEmptyCollections();
+        VerifierSettings.AddExtraSettings(settings =>
+        {
+            settings.DefaultValueHandling = Argon.DefaultValueHandling.Include;
+            settings.NullValueHandling = Argon.NullValueHandling.Include;
+            settings.TypeNameHandling = Argon.TypeNameHandling.All;
+        });
         VerifierSettings.IgnoreStackTrace();
     }
 

@@ -1,11 +1,34 @@
 ﻿{
-  Message: Test error,
-  Reasons: [
-    {
-      Message: Error 1
-    },
-    {
-      Message: Error 2
-    }
-  ]
+  $type: Error,
+  Message: Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: Error,
+        Message: Error 1,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      },
+      {
+        $type: Error,
+        Message: Error 2,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  }
 }

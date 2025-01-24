@@ -1,5 +1,6 @@
 ﻿using Xeyth.Result.Reasons;
-using Xeyth.Result.Extensions.ReasonExtensions;
+using Xeyth.Result.Reasons.Abstract;
+using Xeyth.Result.Extensions.Reasons;
 
 namespace Xeyth.Result;
 
@@ -21,7 +22,7 @@ public partial class Result
     /// <param name="errorMessage">The error message to include if the result fails.</param>
     /// <returns>A success result if <paramref name="isSuccess"/> is <see langword="true"/>; otherwise, a failure result.</returns>
     public static Result<TValue> OkIf<TValue>(TValue value, bool isSuccess, string errorMessage) =>
-        OkIf(value, isSuccess, Error.DefaultFactory(errorMessage));
+        OkIf(value, isSuccess, Error.Factory(errorMessage));
 
     /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="isSuccess"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
@@ -61,7 +62,7 @@ public partial class Result
     /// <param name="errorMessage">The error message to include if the result fails.</param>
     /// <returns>A success result if <paramref name="predicate"/> returns <see langword="true"/>; otherwise, a failure result.</returns>
     public static Result<TValue> OkIf<TValue>(TValue value, Func<bool> predicate, string errorMessage) =>
-        OkIf(value, predicate, Error.DefaultFactory(errorMessage));
+        OkIf(value, predicate, Error.Factory(errorMessage));
 
     /// <summary>Creates a success or failure <see cref="Result{TValue}"/> depending on the <paramref name="predicate"/> parameter.</summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>

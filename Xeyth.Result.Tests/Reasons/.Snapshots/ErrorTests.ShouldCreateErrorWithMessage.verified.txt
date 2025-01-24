@@ -1,3 +1,11 @@
 ﻿{
-  Message: Test message
+  $type: Error,
+  Message: Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: []
+  }
 }

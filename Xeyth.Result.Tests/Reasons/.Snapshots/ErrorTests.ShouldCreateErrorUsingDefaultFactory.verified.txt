@@ -1,0 +1,11 @@
+﻿{
+  $type: Error,
+  Message: Error from factory,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: []
+  }
+}

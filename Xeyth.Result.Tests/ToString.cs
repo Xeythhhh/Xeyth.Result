@@ -1,4 +1,5 @@
 ﻿namespace Xeyth.Result.Tests;
+
 public static class ToString
 {
     public class NonGeneric
@@ -15,7 +16,11 @@ public static class ToString
     public class Generic
     {
         [Fact]
-        public Task ShouldPrintSuccess() => Verify(Result.Ok(420)
+        public Task ShouldPrintSuccess_ForValueType() => Verify(Result.Ok(420)
+            .ToString());
+
+        [Fact]
+        public Task ShouldPrintSuccess_ForReferenceType() => Verify(Result.Ok(new SomeReferenceType())
             .ToString());
 
         [Fact]

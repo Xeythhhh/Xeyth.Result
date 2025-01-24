@@ -1,0 +1,18 @@
+﻿{
+  $type: Result<int>,
+  Value: 0,
+  IsFailed: false,
+  IsSuccess: true,
+  Reasons: {
+    $type: List<IReason>,
+    $values: []
+  },
+  Errors: {
+    $type: List<IError>,
+    $values: []
+  },
+  Successes: {
+    $type: List<ISuccess>,
+    $values: []
+  }
+}

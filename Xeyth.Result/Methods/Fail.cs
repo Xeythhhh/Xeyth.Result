@@ -1,4 +1,5 @@
 ﻿using Xeyth.Result.Reasons;
+using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result;
 
@@ -8,7 +9,7 @@ public partial class Result
     /// <param name="errorMessage">The error message to include in the failure.</param>
     /// <returns>A failed <see cref="Result"/>.</returns>
     public static Result Fail(string errorMessage) =>
-        Fail(Error.DefaultFactory(errorMessage));
+        Fail(Error.Factory(errorMessage));
 
     /// <summary>Creates a failed <see cref="Result"/> with the specified <paramref name="error"/>.</summary>
     /// <param name="error">The <see cref="IError"/> to include in the failure.</param>
@@ -23,7 +24,7 @@ public partial class Result
     public static Result Fail(IEnumerable<string> errorMessages)
     {
         ArgumentNullException.ThrowIfNull(errorMessages);
-        return Fail(errorMessages.Select(Error.DefaultFactory));
+        return Fail(errorMessages.Select(Error.Factory));
     }
 
     /// <summary>Creates a failed <see cref="Result"/> with the specified <paramref name="errors"/>.</summary>
@@ -41,7 +42,7 @@ public partial class Result
     /// <param name="errorMessage">The error message to include in the failure.</param>
     /// <returns>A failed <see cref="Result{TValue}"/>.</returns>
     public static Result<TValue> Fail<TValue>(string errorMessage) =>
-        Fail<TValue>(Error.DefaultFactory(errorMessage));
+        Fail<TValue>(Error.Factory(errorMessage));
 
     /// <summary>Creates a failed <see cref="Result{TValue}"/> with the specified <paramref name="error"/>.</summary>
     /// <typeparam name="TValue">The type of the value associated with the <see cref="Result{TValue}"/>.</typeparam>
@@ -58,7 +59,7 @@ public partial class Result
     public static Result<TValue> Fail<TValue>(IEnumerable<string> errorMessages)
     {
         ArgumentNullException.ThrowIfNull(errorMessages);
-        return Fail<TValue>(errorMessages.Select(Error.DefaultFactory));
+        return Fail<TValue>(errorMessages.Select(Error.Factory));
     }
 
     /// <summary>Creates a failed <see cref="Result{TValue}"/> with the specified <paramref name="errors"/>.</summary>

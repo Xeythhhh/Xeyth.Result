@@ -1,7 +1,9 @@
 ﻿using Shouldly;
+
 using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Tests;
+
 public class Deconstruction(ITestOutputHelper output)
 {
     private const string errorMessage = "Error message";
@@ -26,6 +28,10 @@ public class Deconstruction(ITestOutputHelper output)
         // Assert
         isSuccess.ShouldBeTrue();
         isFailed.ShouldBeFalse();
+
+        foreach (IError error in errors)
+            output.WriteLine(error.ToString() ?? "null");
+
         errors.ShouldBeEmpty();
     }
 
@@ -38,9 +44,6 @@ public class Deconstruction(ITestOutputHelper output)
         // Assert
         isSuccess.ShouldBeFalse();
         isFailed.ShouldBeTrue();
-
-        foreach (IError error in errors)
-            output.WriteLine(error.ToString() ?? "null");
 
         errors.ShouldContain(error => error.Message == errorMessage);
     }

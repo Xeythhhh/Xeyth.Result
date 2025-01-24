@@ -1,8 +1,0 @@
-﻿{
-  Exception: {
-    $type: Exception,
-    Type: Exception,
-    Message: Test exception
-  },
-  Message: Error with no metadata or reasons
-}

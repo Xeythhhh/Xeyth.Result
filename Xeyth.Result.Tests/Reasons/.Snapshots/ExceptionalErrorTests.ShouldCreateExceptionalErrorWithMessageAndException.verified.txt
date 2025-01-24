@@ -1,8 +1,21 @@
 ﻿{
+  $type: ExceptionalError,
   Exception: {
     $type: Exception,
     Type: Exception,
-    Message: Test exception
+    Message: Exception,
+    Data: {
+      $type: ListDictionaryInternal
+    },
+    InnerException: null,
+    HelpLink: null
   },
-  Message: Custom error message
+  Message: Exceptional Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: []
+  }
 }

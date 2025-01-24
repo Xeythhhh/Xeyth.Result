@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+
 using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Tests;
@@ -29,6 +30,10 @@ public class DeconstructionGeneric(ITestOutputHelper output)
         // Assert
         isSuccess.ShouldBeTrue();
         isFailed.ShouldBeFalse();
+
+        foreach (IError error in errors)
+            output.WriteLine(error.ToString() ?? "null");
+
         errors.ShouldBeEmpty();
         value.ShouldBe(Value);
     }

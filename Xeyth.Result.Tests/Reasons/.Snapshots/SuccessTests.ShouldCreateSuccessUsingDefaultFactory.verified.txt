@@ -1,3 +1,7 @@
 ﻿{
-  Message: Factory success message
+  $type: Success,
+  Message: Success from factory,
+  Metadata: {
+    $type: Dictionary<string, object>
+  }
 }

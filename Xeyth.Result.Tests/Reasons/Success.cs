@@ -2,50 +2,41 @@
 
 using Xeyth.Result.Reasons;
 using Xeyth.Result.Reasons.Abstract;
-
-using static Xeyth.Result.Tests.Abstract.TestBase;
+using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Reasons;
 
 public class SuccessTests
 {
     [Fact]
-    public async Task ShouldCreateSuccessWithMessage() =>
-        await Verify(new Success("Success"));
+    public void ShouldCreateSuccessWithMessage() => Verify(new Success("Success"));
 
     [Fact]
-    public async Task ShouldAddMetadata() =>
-        await Verify(new Success("Success")
-            .WithMetadata("Key", "Value"));
+    public void ShouldAddMetadata() => Verify(new Success("Success")
+        .WithMetadata("Key", "Value"));
 
     [Fact]
-    public async Task ShouldAddMultipleMetadata() =>
-        await Verify(new Success("Success")
-            .WithMetadata(new Dictionary<string, object>
-            {
-                { "Key1", "Value1" },
-                { "Key2", "Value2" }
-            }));
+    public void ShouldAddMultipleMetadata() => Verify(new Success("Success")
+        .WithMetadata(new Dictionary<string, object>
+        {
+            { "Key1", "Value1" },
+            { "Key2", "Value2" }
+        }));
 
     [Fact]
-    public async Task ShouldReturnStringRepresentation() =>
-        await Verify(new Success("Success")
-            .WithMetadata("Key", "Value").ToString());
+    public void ShouldReturnStringRepresentation() => Verify(new Success("Success")
+        .WithMetadata("Key", "Value")
+        .ToString());
 
     [Fact]
-    public async Task ShouldCreateSuccessUsingDefaultFactory() =>
-        await Verify(Success.Factory("Success from factory"));
+    public void ShouldCreateSuccessUsingDefaultFactory() => Verify(Success.Factory("Success from factory"));
 
     [Fact]
-    public void ShouldThrowWhenTryingToOverrideFactoryWithNull() =>
-        Should.Throw<ArgumentNullException>(() => Success.Factory = null!);
+    public void ShouldThrowWhenTryingToOverrideFactoryWithNull() => Should.Throw<ArgumentNullException>(() => Success.Factory = null!);
 
     [Fact]
-    public async Task ShouldCreateSuccessAfterOverridingFactory()
+    public void ShouldCreateSuccessAfterOverridingFactory()
     {
-        // If this causes other tests to fail in the future, look into IAsynLifetime Setup/Teardown
-        // and disable parallelization on this test class
-
         // Arrange
 
         Func<string, ISuccess> originalFactory = Success.Factory;
@@ -59,7 +50,7 @@ public class SuccessTests
 
             // Assert
 
-            await Verify(success);
+            Verify(success);
         }
         finally
         {

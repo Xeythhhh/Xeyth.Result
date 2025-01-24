@@ -1,5 +1,6 @@
 ﻿using Xeyth.Result.Reasons;
-using Xeyth.Result.Extensions.ReasonExtensions;
+using Xeyth.Result.Reasons.Abstract;
+using Xeyth.Result.Extensions.Reasons;
 
 namespace Xeyth.Result;
 
@@ -33,25 +34,17 @@ public partial class Result
 
         errorFactory ??= typeof(TError).IsAssignableFrom(typeof(OkIf_PredicateError))
             ? () => OkIf_ErrorFactory().CastError<TError>()
-            : throw new InvalidOperationException($"Default error is not compatible with {typeof(TError).Name}");
+            : throw new InvalidOperationException($"Default OkIf Error factory is not compatible with {typeof(TError).Name}");
 
         return Fail(errorFactory());
     }
 
     /// <summary>Creates a success or failure <see cref="Result"/> based on <paramref name="isSuccess"/>.</summary>
     /// <param name="isSuccess">Indicates whether the result should be successful.</param>
-    /// <param name="errorMessageFactory">A factory function to generate the error message if the result fails.</param>
-    /// <returns>A success <see cref="Result"/> if <paramref name="isSuccess"/> is <see langword="true"/>; otherwise, a failure result.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="errorMessageFactory"/> is <see langword="null"/>.</exception>
-    public static Result OkIf(bool isSuccess, Func<string> errorMessageFactory) =>
-        OkIf(() => isSuccess, () => Error.DefaultFactory(errorMessageFactory()));
-
-    /// <summary>Creates a success or failure <see cref="Result"/> based on <paramref name="isSuccess"/>.</summary>
-    /// <param name="isSuccess">Indicates whether the result should be successful.</param>
     /// <param name="errorMessage">The error message to include if the result fails.</param>
     /// <returns>A success <see cref="Result"/> if <paramref name="isSuccess"/> is <see langword="true"/>; otherwise, a failure result.</returns>
     public static Result OkIf(bool isSuccess, string errorMessage) =>
-        OkIf(() => isSuccess, () => Error.DefaultFactory(errorMessage));
+        OkIf(() => isSuccess, () => Error.Factory(errorMessage));
 
     /// <summary>Creates a success or failure <see cref="Result"/> based on <paramref name="isSuccess"/>.</summary>
     /// <typeparam name="TError">The type of the error produced if the result fails.</typeparam>
@@ -61,6 +54,14 @@ public partial class Result
     public static Result OkIf<TError>(bool isSuccess, TError error)
         where TError : IError =>
         OkIf(() => isSuccess, () => error);
+
+    /// <summary>Creates a success or failure <see cref="Result"/> based on <paramref name="isSuccess"/>.</summary>
+    /// <param name="isSuccess">Indicates whether the result should be successful.</param>
+    /// <param name="errorMessageFactory">A factory function to generate the error message if the result fails.</param>
+    /// <returns>A success <see cref="Result"/> if <paramref name="isSuccess"/> is <see langword="true"/>; otherwise, a failure result.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="errorMessageFactory"/> is <see langword="null"/>.</exception>
+    public static Result OkIf(bool isSuccess, Func<string> errorMessageFactory) =>
+        OkIf(() => isSuccess, () => Error.Factory(errorMessageFactory()));
 
     /// <summary>Creates a success or failure <see cref="Result"/> based on <paramref name="isSuccess"/>.</summary>
     /// <typeparam name="TError">The type of the error produced if the result fails.</typeparam>
@@ -73,17 +74,10 @@ public partial class Result
 
     /// <summary>Creates a success or failure <see cref="Result"/> based on the given <paramref name="predicate"/>.</summary>
     /// <param name="predicate">A function that determines whether the result should be successful or failed.</param>
-    /// <param name="errorMessageFactory">A factory function to generate the error message if the result fails.</param>
-    /// <returns>A success <see cref="Result"/> if the predicate returns <see langword="true"/>; otherwise, a failure result.</returns>
-    public static Result OkIf(Func<bool> predicate, Func<string> errorMessageFactory) =>
-        OkIf(predicate, () => Error.DefaultFactory(errorMessageFactory()));
-
-    /// <summary>Creates a success or failure <see cref="Result"/> based on the given <paramref name="predicate"/>.</summary>
-    /// <param name="predicate">A function that determines whether the result should be successful or failed.</param>
     /// <param name="errorMessage">The error message to include if the result fails.</param>
     /// <returns>A success <see cref="Result"/> if the predicate returns <see langword="true"/>; otherwise, a failure result.</returns>
     public static Result OkIf(Func<bool> predicate, string errorMessage) =>
-        OkIf(predicate, () => Error.DefaultFactory(errorMessage));
+        OkIf(predicate, () => Error.Factory(errorMessage));
 
     /// <summary>Creates a success or failure <see cref="Result"/> based on the given <paramref name="predicate"/>.</summary>
     /// <typeparam name="TError">The type of the error produced if the result fails.</typeparam>
@@ -93,4 +87,11 @@ public partial class Result
     public static Result OkIf<TError>(Func<bool> predicate, TError error)
         where TError : IError =>
         OkIf(predicate, () => error);
+
+    /// <summary>Creates a success or failure <see cref="Result"/> based on the given <paramref name="predicate"/>.</summary>
+    /// <param name="predicate">A function that determines whether the result should be successful or failed.</param>
+    /// <param name="errorMessageFactory">A factory function to generate the error message if the result fails.</param>
+    /// <returns>A success <see cref="Result"/> if the predicate returns <see langword="true"/>; otherwise, a failure result.</returns>
+    public static Result OkIf(Func<bool> predicate, Func<string> errorMessageFactory) =>
+        OkIf(predicate, () => Error.Factory(errorMessageFactory()));
 }

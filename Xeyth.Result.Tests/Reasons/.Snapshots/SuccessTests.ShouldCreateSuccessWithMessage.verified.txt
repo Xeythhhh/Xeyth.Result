@@ -1,3 +1,7 @@
 ﻿{
-  Message: Test message
+  $type: Success,
+  Message: Success,
+  Metadata: {
+    $type: Dictionary<string, object>
+  }
 }

@@ -1,29 +1,30 @@
-﻿using Xeyth.Result.Reasons.Abstract;
-using Xeyth.Result.Reasons;
-using Xeyth.Result.Tests.Abstract;
+﻿using Xeyth.Result.Reasons;
+using Xeyth.Result.Reasons.Abstract;
+using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests;
-public class Conversion : TestBase
+
+public class Conversion
 {
     [Fact]
-    public Task ShouldConvertSingleErrorExplicitly() => Verify((Result)new Error("Error"));
+    public void ShouldConvertSingleErrorExplicitly() => Verify((Result)new Error("Error"));
 
     [Fact]
-    public Task ShouldConvertSingleErrorImplicitly()
+    public void ShouldConvertSingleErrorImplicitly()
     {
         Result result = new Error("Error");
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertErrorListExplicitly() => Verify((Result)new List<IError>()
+    public void ShouldConvertErrorListExplicitly() => Verify((Result)new List<IError>()
         {
             new Error("Error 1"),
             new CustomError("Error 2")
         });
 
     [Fact]
-    public Task ShouldConvertErrorListImplicitly()
+    public void ShouldConvertErrorListImplicitly()
     {
         Result result = new List<IError>()
         {
@@ -31,16 +32,16 @@ public class Conversion : TestBase
             new CustomError("Error 2")
         };
 
-        return Verify(result);
+        Verify(result);
     }
 
     [Fact]
-    public Task ShouldConvertToGenericResultExplicitly() => Verify((Result<int>)Result.Ok());
+    public void ShouldConvertToGenericResultExplicitly() => Verify((Result<int>)Result.Ok());
 
     [Fact]
-    public Task ShouldConvertToGenericResultImplicitly()
+    public void ShouldConvertToGenericResultImplicitly()
     {
         Result<int> result = Result.Ok();
-        return Verify(result);
+        Verify(result);
     }
 }

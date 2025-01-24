@@ -1,28 +1,65 @@
 ﻿{
+  $type: ExceptionalError,
   Exception: {
     $type: Exception,
     Type: Exception,
-    Message: Outer exception
+    Message: Exception,
+    Data: {
+      $type: ListDictionaryInternal
+    },
+    InnerException: null,
+    HelpLink: null
   },
-  Message: Outer error,
-  Reasons: [
-    {
-      Exception: {
-        $type: Exception,
-        Type: Exception,
-        Message: Inner exception
-      },
-      Message: Inner error,
-      Reasons: [
-        {
-          Exception: {
-            $type: Exception,
-            Type: Exception,
-            Message: Innermost exception
+  Message: Exceptional Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: ExceptionalError,
+        Exception: {
+          $type: Exception,
+          Type: Exception,
+          Message: Inner Exception 1,
+          Data: {
+            $type: ListDictionaryInternal
           },
-          Message: Innermost exception
+          InnerException: null,
+          HelpLink: null
+        },
+        Message: Inner Exceptional Error,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: [
+            {
+              $type: ExceptionalError,
+              Exception: {
+                $type: Exception,
+                Type: Exception,
+                Message: Inner Exception 2 (Deep),
+                Data: {
+                  $type: ListDictionaryInternal
+                },
+                InnerException: null,
+                HelpLink: null
+              },
+              Message: Inner Exception 2 (Deep),
+              Metadata: {
+                $type: Dictionary<string, object>
+              },
+              Reasons: {
+                $type: List<IError>,
+                $values: []
+              }
+            }
+          ]
         }
-      ]
-    }
-  ]
+      }
+    ]
+  }
 }

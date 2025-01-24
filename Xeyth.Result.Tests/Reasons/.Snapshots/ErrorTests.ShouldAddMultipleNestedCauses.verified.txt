@@ -1,21 +1,56 @@
 ﻿{
-  Message: Outer error,
-  Reasons: [
-    {
-      Message: Inner error,
-      Reasons: [
-        {
-          Message: Deeper cause
+  $type: Error,
+  Message: Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: Error,
+        Message: Cause 1,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: [
+            {
+              $type: Error,
+              Message: Cause 2 (Deep),
+              Metadata: {
+                $type: Dictionary<string, object>
+              },
+              Reasons: {
+                $type: List<IError>,
+                $values: []
+              }
+            }
+          ]
         }
-      ]
-    },
-    {
-      Exception: {
-        $type: Exception,
-        Type: Exception,
-        Message: Another exception
       },
-      Message: Another exception
-    }
-  ]
+      {
+        $type: ExceptionalError,
+        Exception: {
+          $type: Exception,
+          Type: Exception,
+          Message: Exception,
+          Data: {
+            $type: ListDictionaryInternal
+          },
+          InnerException: null,
+          HelpLink: null
+        },
+        Message: Exception,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  }
 }

@@ -1,8 +1,23 @@
 ﻿{
-  Message: Test error,
-  Reasons: [
-    {
-      Message: Cause 1
-    }
-  ]
+  $type: Error,
+  Message: Error,
+  Metadata: {
+    $type: Dictionary<string, object>
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: [
+      {
+        $type: Error,
+        Message: Cause 1,
+        Metadata: {
+          $type: Dictionary<string, object>
+        },
+        Reasons: {
+          $type: List<IError>,
+          $values: []
+        }
+      }
+    ]
+  }
 }

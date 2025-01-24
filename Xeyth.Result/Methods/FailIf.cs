@@ -1,4 +1,4 @@
-﻿using Xeyth.Result.Reasons;
+﻿using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result;
 

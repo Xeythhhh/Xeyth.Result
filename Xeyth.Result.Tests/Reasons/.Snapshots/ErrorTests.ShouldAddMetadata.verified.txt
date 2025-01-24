@@ -1,6 +1,12 @@
 ﻿{
-  Message: Test error,
+  $type: Error,
+  Message: Error,
   Metadata: {
+    $type: Dictionary<string, object>,
     Key: Value
+  },
+  Reasons: {
+    $type: List<IError>,
+    $values: []
   }
 }
