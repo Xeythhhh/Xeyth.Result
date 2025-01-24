@@ -1,176 +1,187 @@
 ﻿using Xeyth.Result.Base;
+using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Reasons;
 
-/// <summary>Represents an error that causes a result to fail. Errors can include metadata and nested reasons for additional context.</summary>
+/// <summary>Represents an <see cref="IError"/> that causes a result to fail. Errors can include <see cref="Metadata"/> and nested <see cref="Reasons"/> for additional context.</summary>
 public class Error : IError
 {
-    private const string defaultErrorMessage = "No error message provided.";
-    private static Func<string?, IError> _defaultErrorFactory = errorMessage => new Error(errorMessage ?? defaultErrorMessage);
-    /// <summary>The default factory function used to generate an error.
+    /// <summary>Default factory</summary>
+    /// <exception cref="ArgumentNullException">Thrown when the message is <see langword="null"/></exception>
+    private static Func<string, IError> _factory = message =>
+    {
+        ArgumentNullException.ThrowIfNull(message);
+        return new Error(message);
+    };
+
+    /// <summary>The factory function used to generate an <see cref="IError"/>.
     /// If not explicitly set, it defaults to creating an instance of <see cref="Error"/>.</summary>
-    public static Func<string?, IError> DefaultFactory
+    /// <exception cref="ArgumentNullException">Throw when trying to set and <paramref name="value"/> is <see langword="null"/></exception>
+    /// <exception cref="ArgumentNullException">Thrown by the default factory when the message is <see langword="null"/></exception>
+    public static Func<string, IError> Factory
     {
-        get => _defaultErrorFactory;
-        set => _defaultErrorFactory = value ?? throw new ArgumentNullException(nameof(value));
+        get => _factory;
+        set => _factory = value ?? throw new ArgumentNullException(nameof(value));
     }
 
-    private static Func<Exception, IError> _defaultExceptionalErrorFactory = exception => new ExceptionalError(exception.Message, exception);
-    /// <summary>The default factory function used to generate an error.
-    /// If not explicitly set, it defaults to creating an instance of <see cref="ExceptionalError"/>.</summary>
-    public static Func<Exception, IError> DefaultExceptionalErrorFactory
-    {
-        get => _defaultExceptionalErrorFactory;
-        set => _defaultExceptionalErrorFactory = value ?? throw new ArgumentNullException(nameof(value));
-    }
-
-    /// <summary>The message describing the error.</summary>
+    /// <summary>The message describing the <see cref="Error"/>.</summary>
     public string Message { get; protected set; } = "Missing Error Message.";
 
-    /// <summary>Metadata providing additional context about the error.</summary>
+    /// <summary>Metadata providing additional context about the <see cref="Error"/>.</summary>
     public Dictionary<string, object> Metadata { get; }
 
-    /// <summary>The underlying reasons contributing to this error.</summary>
+    /// <summary>The underlying <see cref="IReason"/>s contributing to this <see cref="Error"/>.</summary>
     public List<IError> Reasons { get; }
 
     /// <summary>Initializes a new instance of the <see cref="Error"/> class.</summary>
+    /// <returns>A new instance of <see cref="Error"/>.</returns>
     protected Error()
     {
         Metadata = [];
         Reasons = [];
     }
 
-    /// <summary>Initializes a new instance of the <see cref="Error"/> class with a specific message.</summary>
+    /// <summary>Initializes a new instance of the <see cref="Error"/> class with a specific <see cref="Message"/>.</summary>
     /// <param name="message">The error message.</param>
+    /// <returns>A new instance of <see cref="Error"/>.</returns>
     public Error(string message) : this() => Message = message;
 
-    /// <summary>Initializes a new instance of the <see cref="Error"/> class with a message and a root cause.</summary>
+    /// <summary>Initializes a new instance of the <see cref="Error"/> class with a <see cref="Message"/> and a root cause.</summary>
     /// <param name="message">The error message.</param>
-    /// <param name="causedBy">The root cause of the error.</param>
+    /// <param name="causedBy">The root cause of the <see cref="Error"/>.</param>
+    /// <exception cref="ArgumentNullException">Throw when <paramref name="causedBy"/> is <see langword="null"/></exception>
+    /// <returns>A new instance of <see cref="Error"/>.</returns>
     public Error(string message, IError causedBy) : this(message)
     {
         ArgumentNullException.ThrowIfNull(causedBy);
         Reasons.Add(causedBy);
     }
 
-    /// <summary>Adds a root cause to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(IError)"/> method.</summary>
-    /// <param name="error">The root cause to add.</param>
-    public Error CausedBy(IError error) => CausedBy<Error>(error);
-
-    /// <summary>Adds an exception as a root cause to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(Exception)"/> method.</summary>
-    /// <param name="exception">The exception to add as a root cause.</param>
-    public Error CausedBy(Exception exception) => CausedBy<Error>(exception);
-
-    /// <summary>Adds a message as a root cause to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(string)"/> method.</summary>
+    /// <summary>Adds a message as a root cause to this <see cref="Error"/>.</summary>
     /// <param name="message">The error message to add as a root cause.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(string)"/>.</remarks>
     public Error CausedBy(string message) => CausedBy<Error>(message);
 
-    /// <summary>Adds multiple errors as root causes to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(IEnumerable{IError})"/> method.</summary>
-    /// <param name="errors">The errors to add as root causes.</param>
-    public Error CausedBy(IEnumerable<IError> errors) => CausedBy<Error>(errors);
+    /// <summary>Adds a message as a root cause to this <see cref="IError"/>.</summary>
+    /// <typeparam name="TError">The type of the current instance.</typeparam>
+    /// <param name="message">The error message to add as a root cause.</param>
+    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IError)"/>.</remarks>
+    public TError CausedBy<TError>(string message)
+        where TError : Error => CausedBy<TError>(Factory(message));
 
-    /// <summary>Adds multiple errors as root causes to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(IEnumerable{IError})"/> method.</summary>
-    /// <param name="errors">The errors to add as root causes.</param>
-    public Error CausedBy(params IError[] errors) => CausedBy<Error>(errors);
+    /// <summary>Adds a root cause to this <see cref="Error"/>.</summary>
+    /// <param name="error">The root cause to add.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IError)"/>.</remarks>
+    public Error CausedBy(IError error) => CausedBy<Error>(error);
 
-    /// <summary>Adds multiple messages as root causes to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(IEnumerable{string})"/> method.</summary>
-    /// <param name="errors">The error messages to add as root causes.</param>
-    public Error CausedBy(IEnumerable<string> errors) => CausedBy<Error>(errors);
+    /// <summary>Adds an exception as a root cause to this <see cref="Error"/>.</summary>
+    /// <param name="exception">The exception to add as a root cause.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(Exception)"/>.</remarks>
+    public Error CausedBy(Exception exception) => CausedBy<Error>(exception);
 
-    /// <summary>Adds multiple messages as root causes to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="CausedBy{TError}(IEnumerable{string})"/> method.</summary>
-    /// <param name="errors">The error messages to add as root causes.</param>
-    public Error CausedBy(params string[] errors) => CausedBy<Error>(errors);
+    /// <summary>Adds an <see cref="Exception"/> as a root cause to this <typeparamref name="TError"/>.</summary>
+    /// <typeparam name="TError">The type of the current instance.</typeparam>
+    /// <param name="exception">The exception to add as a root cause.</param>
+    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IError)"/>.</remarks>
+    public TError CausedBy<TError>(Exception exception)
+        where TError : Error => CausedBy<TError>(new ExceptionalError(exception));
 
-    /// <summary>Adds metadata to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="WithMetadata{TError}(string, object)"/> method.</summary>
-    /// <param name="metadataName">The name of the metadata.</param>
-    /// <param name="metadataValue">The value of the metadata.</param>
-    public Error WithMetadata(string metadataName, object metadataValue) => WithMetadata<Error>(metadataName, metadataValue);
-
-    /// <summary>Adds multiple metadata items to this error and returns the current instance as <see cref="Error"/>.
-    /// This method delegates to the generic <see cref="WithMetadata{TError}(Dictionary{string, object})"/> method.</summary>
-    /// <param name="metadata">The metadata to add.</param>
-    public Error WithMetadata(Dictionary<string, object> metadata) => WithMetadata<Error>(metadata);
-
-    /// <summary>Adds a root cause to this error and returns the current instance.</summary>
+    /// <summary>Adds a root cause to this <typeparamref name="TError"/>.</summary>
     /// <typeparam name="TError">The type of the current instance.</typeparam>
     /// <param name="error">The root cause to add.</param>
+    /// <exception cref="ArgumentNullException">Throw when <paramref name="errors"/> is <see langword="null"/></exception>
     /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError CausedBy<TError>(IError error) where TError : Error
+    public TError CausedBy<TError>(IError error)
+        where TError : Error
     {
         ArgumentNullException.ThrowIfNull(error);
         Reasons.Add(error);
         return (TError)this;
     }
 
-    /// <summary>Adds an exception as a root cause to this error and returns the current instance.</summary>
-    /// <typeparam name="TError">The type of the current instance.</typeparam>
-    /// <param name="exception">The exception to add as a root cause.</param>
-    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError CausedBy<TError>(Exception exception) where TError : Error
-    {
-        ArgumentNullException.ThrowIfNull(exception);
-        Reasons.Add(DefaultExceptionalErrorFactory(exception));
-        return (TError)this;
-    }
+    /// <summary>Adds multiple messages as root causes to this <see cref="Error"/>.</summary>
+    /// <param name="errors">The error messages to add as root causes.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IEnumerable{string})"/>.</remarks>
+    public Error CausedBy(IEnumerable<string> errors) => CausedBy<Error>(errors);
 
-    /// <summary>Adds a message as a root cause to this error and returns the current instance.</summary>
-    /// <typeparam name="TError">The type of the current instance.</typeparam>
-    /// <param name="message">The error message to add as a root cause.</param>
-    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError CausedBy<TError>(string message) where TError : Error
-    {
-        Reasons.Add(DefaultFactory(message));
-        return (TError)this;
-    }
+    /// <summary>Adds multiple messages as root causes to this <see cref="Error"/>.</summary>
+    /// <param name="errors">The error messages to add as root causes.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IEnumerable{string})"/>.</remarks>
+    public Error CausedBy(params string[] errors) => CausedBy<Error>(errors);
 
-    /// <summary>Adds multiple errors as root causes to this error and returns the current instance.</summary>
+    /// <summary>Adds multiple messages as root causes to this <typeparamref name="TError"/>.</summary>
+    /// <typeparam name="TError">The type of the current instance.</typeparam>
+    /// <param name="errors">The error messages to add as root causes.</param>
+    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IEnumerable{IError})"/>.</remarks>
+    public TError CausedBy<TError>(IEnumerable<string> errors)
+        where TError : Error => CausedBy<TError>(errors.Select(Factory));
+
+    /// <summary>Adds multiple <see cref="IError"/>s as root causes to this <see cref="Error"/>.</summary>
+    /// <param name="errors">The errors to add as root causes.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IEnumerable{IError})"/>.</remarks>
+    public Error CausedBy(IEnumerable<IError> errors) => CausedBy<Error>(errors);
+
+    /// <summary>Adds multiple <see cref="IError"/>s as root causes to this <see cref="Error"/>.</summary>
+    /// <param name="errors">The errors to add as root causes.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="CausedBy{TError}(IEnumerable{IError})"/>.</remarks>
+    public Error CausedBy(params IError[] errors) => CausedBy<Error>(errors);
+
+    /// <summary>Adds multiple <see cref="IError"/> as root causes to this <typeparamref name="TError"/>.</summary>
     /// <typeparam name="TError">The type of the current instance.</typeparam>
     /// <param name="errors">The errors to add as root causes.</param>
+    /// <exception cref="ArgumentNullException">Throw when <paramref name="errors"/> is <see langword="null"/></exception>
     /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError CausedBy<TError>(IEnumerable<IError> errors) where TError : Error
+    public TError CausedBy<TError>(IEnumerable<IError> errors)
+        where TError : Error
     {
         ArgumentNullException.ThrowIfNull(errors);
         Reasons.AddRange(errors);
         return (TError)this;
     }
 
-    /// <summary>Adds multiple messages as root causes to this error and returns the current instance.</summary>
-    /// <typeparam name="TError">The type of the current instance.</typeparam>
-    /// <param name="errors">The error messages to add as root causes.</param>
-    /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError CausedBy<TError>(IEnumerable<string> errors) where TError : Error
-    {
-        ArgumentNullException.ThrowIfNull(errors);
-        Reasons.AddRange(errors.Select(DefaultFactory));
-        return (TError)this;
-    }
+    /// <summary>Adds <see cref="Metadata"/> to this <see cref="Error"/>.</summary>
+    /// <param name="metadataName">The name of the metadata.</param>
+    /// <param name="metadataValue">The value of the metadata.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="WithMetadata{TError}(string, object)"/>.</remarks>
+    public Error WithMetadata(string metadataName, object metadataValue) => WithMetadata<Error>(metadataName, metadataValue);
 
-    /// <summary>Adds metadata to this error and returns the current instance.</summary>
+    /// <summary>Adds multiple <see cref="Metadata"/> items to this <see cref="Error"/>.</summary>
+    /// <param name="metadata">The metadata to add.</param>
+    /// <returns>The current instance as <see cref="Error"/>.</returns>
+    /// <remarks>This method delegates to <see cref="WithMetadata{TError}(Dictionary{string, object})"/>.</remarks>
+    public Error WithMetadata(Dictionary<string, object> metadata) => WithMetadata<Error>(metadata);
+
+    /// <summary>Adds <see cref="Metadata"/> to this <typeparamref name="TError"/>.</summary>
     /// <typeparam name="TError">The type of the current instance.</typeparam>
     /// <param name="metadataName">The name of the metadata.</param>
     /// <param name="metadataValue">The value of the metadata.</param>
     /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError WithMetadata<TError>(string metadataName, object metadataValue) where TError : Error
+    public TError WithMetadata<TError>(string metadataName, object metadataValue)
+        where TError : Error
     {
         Metadata[metadataName] = metadataValue;
         return (TError)this;
     }
 
-    /// <summary>Adds multiple metadata items to this error and returns the current instance.</summary>
+    /// <summary>Adds multiple <see cref="Metadata"/> items to this <typeparamref name="TError"/>.</summary>
     /// <typeparam name="TError">The type of the current instance.</typeparam>
     /// <param name="metadata">The metadata to add.</param>
     /// <returns>The current instance as <typeparamref name="TError"/>.</returns>
-    public TError WithMetadata<TError>(Dictionary<string, object> metadata) where TError : Error
+    public TError WithMetadata<TError>(Dictionary<string, object> metadata)
+        where TError : Error
     {
-        foreach (var (key, value) in metadata)
+        foreach ((string key, object value) in metadata)
         {
             Metadata[key] = value;
         }
@@ -178,13 +189,18 @@ public class Error : IError
         return (TError)this;
     }
 
-    /// <summary>Returns a string representation of this error, including its type, message, metadata, and reasons.</summary>
-    /// <returns>A string describing this error.</returns>
+    /// <summary>Returns a string representation of this <see cref="Error"/>, including its
+    /// <list type="bullet">
+    /// <item><see cref="Type"/></item>
+    /// <item><see cref="Message"/></item>
+    /// <item><see cref="Metadata"/></item>
+    /// <item><see cref="Reasons"/></item></list></summary>
+    /// <returns>A string describing this <see cref="Error"/>.</returns>
     public override string ToString() =>
         new ReasonStringBuilder()
             .WithReasonType(GetType())
             .WithInfo(nameof(Message), Message)
             .WithInfo(nameof(Metadata), string.Join("; ", Metadata))
-            .WithInfo(nameof(Reasons), ResultBase.ErrorReasonsToString(Reasons))
+            .WithInfo(nameof(Reasons), ResultBase.ReasonsToString(Reasons))
             .Build();
 }

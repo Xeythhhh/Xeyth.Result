@@ -1,15 +1,16 @@
 ﻿using Xeyth.Result.Base;
+using Xeyth.Result.Exceptions;
 using Xeyth.Result.Reasons;
+using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result;
 
 public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue>
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    private TValue _value;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    private TValue _value = default!;
 
     /// <inheritdoc/>
+    /// <remarks>Use <see cref="GetLastSuccessfulValueOrDefault(TValue?)"/> to get the last known value or <see langword="default"/>(<typeparamref name="TValue"/>) for failed results.</remarks>
     public TValue Value
     {
         get
@@ -20,60 +21,27 @@ public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue
         private set => _value = value;
     }
 
-    public TValue ValueOrDefault => IsSuccess ? Value : default!;
-
-    /// <summary>Set value</summary>
-    public Result<TValue> WithValue(TValue value)
-    {
-        Value = value;
-        return this;
-    }
-
-    /// <summary>Map all errors of the result via errorMapper</summary>
-    /// <param name="errorMapper"></param>
-    /// <returns></returns>
-    public Result<TValue> MapErrors(Func<IError, IError> errorMapper) => IsSuccess
-            ? this
-            : new Result<TValue>()
-            .WithErrors(Errors.Select(errorMapper))
-            .WithSuccesses(Successes);
-
-    /// <summary>Map all successes of the result via successMapper</summary>
-    /// <param name="successMapper"></param>
-    /// <returns></returns>
-    public Result<TValue> MapSuccesses(Func<ISuccess, ISuccess> successMapper) => new Result<TValue>()
-            .WithValue(Value)
-            .WithErrors(Errors)
-            .WithSuccesses(Successes.Select(successMapper));
-
-    /// <summary>Convert result with value to result without value</summary>
-    public Result ToResult() => new Result()
-            .WithReasons(Reasons);
-
-    /// <summary>Convert result with value to result with another value. Use valueConverter parameter to specify the value transformation logic</summary>
-    public Result<TNewValue> ToResult<TNewValue>(Func<TValue, TNewValue> valueConverter = null!) =>
-        Map(valueConverter);
-
-    /// <summary>Convert result with value to result with another value. Use valueConverter parameter to specify the value transformation logic</summary>
-    public Result<TNewValue> Map<TNewValue>(Func<TValue, TNewValue> mapLogic) =>
-        IsSuccess && mapLogic == null
-            ? throw new ArgumentException("If result is success then valueConverter should not be null")
-            : new Result<TNewValue>()
-                .WithValue(IsFailed ? default! : mapLogic(Value))
-                .WithReasons(Reasons);
+    /// <summary>Gets the last successful <see cref="Value"/>, or a fallback value.
+    /// <para>For reference types, it may return <see langword="null"/> if the result is failed and no <paramref name="fallbackValue"/> is provided.</para></summary>
+    /// <param name="fallbackValue">The value to return if the result is failed or has a <see langword="default"/>(<typeparamref name="TValue"/>) value.</param>
+    /// <remarks>If a value is not available and the <paramref name="fallbackValue"/> is not provided, the method will return <see langword="default"/>(<typeparamref name="TValue"/>).</remarks>
+    /// <returns>The last successful <see langword="value"/> if available; otherwise, returns the <paramref name="fallbackValue"/>.</returns>
+    public TValue GetLastSuccessfulValueOrDefault(TValue fallbackValue = default!) =>
+        EqualityComparer<TValue>.Default.Equals(_value, default)
+            ? fallbackValue
+            : _value;
 
     public override string ToString()
     {
-        string baseString = base.ToString() ?? string.Empty;
-        string valueString = Value is not null ? $"Value:{Value}" : string.Empty;
-        return $"{baseString}, {valueString}";
+        string valueString = _value is not null ? $"Value:{_value}" : string.Empty;
+        return $"{base.ToString()}, {valueString}";
     }
 
     public static implicit operator Result(Result<TValue> result) =>
-        result.IsSuccess ? Result.Ok() : Result.Fail(result.Errors);
+       result.ToResult();
 
     public static implicit operator Result<TValue>(Result result) =>
-        result.ToResult<TValue>(default!);
+        result.ToResult<TValue>();
 
     public static implicit operator Result<object>(Result<TValue> result) =>
         result.ToResult<object>(value => value!);
@@ -81,14 +49,13 @@ public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue
     public static implicit operator Result<TValue>(TValue value) =>
         value is Result<TValue> result ? result : Result.Ok(value);
 
-    public static implicit operator Result<TValue>(Error error) => Result.Fail(error);
+    public static implicit operator Result<TValue>(Error error) =>
+        Result.Fail(error);
 
-    public static implicit operator Result<TValue>(List<Error> errors) => Result.Fail(errors);
+    public static implicit operator Result<TValue>(List<IError> errors) =>
+        Result.Fail(errors);
 
     /// <summary>Deconstruct Result</summary>
-    /// <param name="isSuccess"></param>
-    /// <param name="isFailed"></param>
-    /// <param name="value"></param>
     public void Deconstruct(out bool isSuccess, out bool isFailed, out TValue value)
     {
         isSuccess = IsSuccess;
@@ -97,21 +64,17 @@ public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue
     }
 
     /// <summary>Deconstruct Result</summary>
-    /// <param name="isSuccess"></param>
-    /// <param name="isFailed"></param>
-    /// <param name="value"></param>
-    /// <param name="errors"></param>
     public void Deconstruct(out bool isSuccess, out bool isFailed, out TValue value, out List<IError> errors)
     {
         isSuccess = IsSuccess;
         isFailed = IsFailed;
         value = IsSuccess ? Value : default!;
-        errors = IsFailed ? Errors : default!;
+        errors = Errors;
     }
 
     private void ThrowIfFailed()
     {
         if (IsFailed)
-            throw new InvalidOperationException($"Result is in status failed. Value is not set. Having: {ErrorReasonsToString(Errors)}");
+            throw new FailedResultValueAccessException(Errors);
     }
 }
