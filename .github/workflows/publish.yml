@@ -34,14 +34,15 @@ jobs:
       shell: pwsh
       run: |
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
-        $packageApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}/packages/nuget/"
+        $packageApiUrl = "https://api.github.com/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
 
-          Write-Host "\n---$project---\n"
+          Write-Host " "
+          Write-Host "---$project---"
           $packageName = $project -replace '\.', '-'
           $versionApiUrl = "$packageApiUrl$project/versions"
-          Write-Host $versionApiUrl
+          Write-Host "Fetching versions from: $versionApiUrl"
       
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
@@ -52,7 +53,6 @@ jobs:
             Write-Host "Error Message: $($_.Exception.Message)"
             if ($_.Exception.Response -ne $null) {
               Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
-              Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
             }
             Write-Host "Failed to fetch version for $project. Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
@@ -69,8 +69,8 @@ jobs:
             switch ($increment) {
               'major' { $major++; $minor = 0; $patch = 0 }
               'minor' { $minor++; $patch = 0 }
-              'debug-patch' { $patch++ } # artificial fail
-              default { Write-Host "Unknown tag: $tag. Skipping $project."; continue }
+              'patch' { $patch++ }
+              default { Write-Host "Unknown increment: $increment. Skipping $project."; continue }
             }
       
             # Construct the new version

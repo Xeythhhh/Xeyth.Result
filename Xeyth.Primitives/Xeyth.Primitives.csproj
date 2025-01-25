@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Xeyth</Authors>
-    <PackageId>Xeyth.Result</PackageId>
+    <PackageId>Xeyth.Primitives</PackageId>
     <Description>A library for representing primitives.</Description>
     <PackageTags>Primitives;Functional;Utility</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
