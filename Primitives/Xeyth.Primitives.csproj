@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Authors>Xeyth</Authors>
     <PackageId>Xeyth.Result</PackageId>
-    <Description>A library for representing operation results.</Description>
-    <PackageTags>Result;Functional;Utility</PackageTags>
+    <Description>A library for representing primitives.</Description>
+    <PackageTags>Primitives;Functional;Utility</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/Xeythhhh/Xeyth.FunctionalExtensions</RepositoryUrl>
