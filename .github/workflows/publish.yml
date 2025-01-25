@@ -85,7 +85,7 @@ jobs:
             dotnet pack "$($project)/$($project).csproj" --no-build --configuration Release -o ./artifacts /p:PackageVersion=$newVersion
           } 
           else {
-            Write-Host "Failed to parse current version for $($project)"
+            Write-Host "Failed to parse current version for {0}. Skipping." -f $project
           }
         }
 
