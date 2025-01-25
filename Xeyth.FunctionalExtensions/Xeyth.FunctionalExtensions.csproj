@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Xeyth</Authors>
+    <PackageId>Xeyth.FunctionalExtensions</PackageId>
+    <Description>A library for referencing all Xeyt.* functional extensions packages.</Description>
+    <PackageTags>Functional;Utility</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/Xeythhhh/Xeyth.FunctionalExtensions</RepositoryUrl>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xeyth.Primitives" Version="1.0.1" />
+    <PackageReference Include="Xeyth.Result" Version="1.0.19" />
+  </ItemGroup>
+
+</Project>

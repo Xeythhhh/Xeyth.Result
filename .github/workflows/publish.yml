@@ -37,6 +37,13 @@ jobs:
         $packageApiUrl = "https://api.github.com/users/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
+          
+          $hasChanges = git diff-tree --no-commit-id --name-only -r HEAD | Select-String -Pattern "$project"
+          if (-not $hasChanges) {
+            Write-Host "No changes detected for $($project). Skipping."
+            continue
+          }
+
           $packageName = $project -replace '\.', '-'
           $versionApiUrl = "$($packageApiUrl)$($project)/versions"
           try {
@@ -47,7 +54,7 @@ jobs:
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
           }
-      
+
           # Parse the current version
           if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
             $major = [int]$Matches[1]
