@@ -36,7 +36,7 @@ jobs:
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
       
         # GitHub Packages base API endpoint
-        $githubApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}
+        $githubApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}"
       
         foreach ($project in $projects) {
           # Fetch the latest version from GitHub Packages
