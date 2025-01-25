@@ -45,4 +45,4 @@ jobs:
 
     - name: Publish to GitHub Packages
       if: success()  # Only run if previous steps succeed
-      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" 
+      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/Xeythhhh/index.json

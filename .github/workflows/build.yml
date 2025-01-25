@@ -47,9 +47,8 @@ jobs:
       run:  |
         git fetch origin gh-pages-test-coverage
         git checkout gh-pages-test-coverage
-        # Remove all files except TestCoverageReport
-        find . -mindepth 1 ! -name 'TestCoverageReport' -exec rm -rf {} \;
-        git commit -am "Clean old files before deploying new coverage report"
+        # List all files and directories in the current directory
+        ls -R
 
     - name: Push test coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
