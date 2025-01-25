@@ -34,20 +34,26 @@ jobs:
       shell: pwsh
       run: |
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
-      
-        # GitHub Packages base API endpoint
-        $githubApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}"
+        $packageApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
-          # Fetch the latest version from GitHub Packages
+
+          Write-Host "\n---$project---\n"
           $packageName = $project -replace '\.', '-'
-          $versionApiUrl = "$githubApiUrl/packages/nuget/$project/versions"
+          $versionApiUrl = "$packageApiUrl$project/versions"
+          Write-Host $versionApiUrl
       
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
             $allVersions = $response.versions
             $currentVersion = $allVersions[-1].name # Get the latest version
-          } catch {
+          } 
+          catch {
+            Write-Host "Error Message: $($_.Exception.Message)"
+            if ($_.Exception.Response -ne $null) {
+              Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
+              Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
+            }
             Write-Host "Failed to fetch version for $project. Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
           }
@@ -61,9 +67,9 @@ jobs:
             # Increment the appropriate version part
             $increment = "${{ github.event.inputs.increment }}"
             switch ($increment) {
-              'pack-major' { $major++; $minor = 0; $patch = 0 }
-              'pack-minor' { $minor++; $patch = 0 }
-              'pack-patch' { $patch++ }
+              'major' { $major++; $minor = 0; $patch = 0 }
+              'minor' { $minor++; $patch = 0 }
+              'debug-patch' { $patch++ } # artificial fail
               default { Write-Host "Unknown tag: $tag. Skipping $project."; continue }
             }
       
@@ -73,7 +79,8 @@ jobs:
       
             # Pack the project
             dotnet pack "$project/$project.csproj" --no-build --configuration Release -o ./artifacts /p:PackageVersion=$newVersion
-          } else {
+          } 
+          else {
             Write-Host "Failed to parse current version for $project. Skipping."
           }
         }
