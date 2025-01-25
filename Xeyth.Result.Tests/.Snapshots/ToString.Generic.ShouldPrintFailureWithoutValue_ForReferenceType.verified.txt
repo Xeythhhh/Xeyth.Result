@@ -1,1 +1,0 @@
-﻿Xeyth.Result.Result`1[Xeyth.Result.Tests.ToString+SomeReferenceType], Successful:false, 

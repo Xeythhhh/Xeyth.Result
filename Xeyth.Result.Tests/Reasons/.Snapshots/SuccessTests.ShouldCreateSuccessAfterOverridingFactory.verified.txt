@@ -1,8 +1,0 @@
-﻿{
-  $type: CustomSuccess,
-  SomeCustomSuccessField: This is a custom Success implementation for testing,
-  Message: (Success from overriden factory) Success Message,
-  Metadata: {
-    $type: Dictionary<string, object>
-  }
-}

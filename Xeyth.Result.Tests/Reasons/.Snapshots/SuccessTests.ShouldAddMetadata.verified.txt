@@ -1,8 +1,0 @@
-﻿{
-  $type: Success,
-  Message: Success,
-  Metadata: {
-    $type: Dictionary<string, object>,
-    Key: Value
-  }
-}
