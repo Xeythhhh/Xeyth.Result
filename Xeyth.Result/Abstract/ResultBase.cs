@@ -1,4 +1,7 @@
-﻿using Xeyth.Result.Abstract;
+﻿using System.Collections.ObjectModel;
+using System.Threading;
+
+using Xeyth.Result.Abstract;
 using Xeyth.Result.Reasons;
 using Xeyth.Result.Reasons.Abstract;
 
@@ -11,20 +14,39 @@ public abstract partial class ResultBase : IResultBase
 {
     /// <summary>Initializes a new instance of the <see cref="ResultBase"/> class.</summary>
     /// <remarks>The constructor initializes an empty collection of <see cref="IReason"/>s.</remarks>
-    protected ResultBase() => Reasons = [];
+    protected ResultBase()
+    {
+        Reasons.CollectionChanged += (sender, args) => UpdateFailedState();
+    }
 
+    private void UpdateFailedState()
+    {
+        _cachedErrors = Reasons.OfType<IError>().ToList();
+        IsFailed = _cachedErrors.Count != 0;
+    }
+
+    private bool _isFailed;
     /// <inheritdoc/>
-    public bool IsFailed => Reasons.OfType<IError>().Any();
+    public bool IsFailed
+    {
+        get => _isFailed;
+        private set
+        {
+            if (_isFailed != value)
+                _isFailed = value;
+        }
+    }
 
     /// <inheritdoc/>
     public bool IsSuccess => !IsFailed;
 
     /// <inheritdoc/>
-    public List<IReason> Reasons { get; }
+    public ObservableCollection<IReason> Reasons { get; } = [];
 
     /// <inheritdoc/>
-    /// <example>To include nested errors, use <see cref="GetErrors{TError}()"/> with <see cref="Error"/> as the type parameter.</example>
-    public List<IError> Errors => Reasons.OfType<IError>().ToList();
+    /// <remarks>To include nested errors, use <see cref="GetErrors{TError}()"/> with <see cref="Error"/> as the type parameter.</remarks>
+    public List<IError> Errors => _cachedErrors;
+    private List<IError> _cachedErrors = [];
 
     /// <inheritdoc/>
     public List<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList();

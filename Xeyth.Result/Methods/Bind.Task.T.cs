@@ -30,8 +30,7 @@ public partial class Result<TValue>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
     /// <remarks>This method delegates to <see cref="Bind(Func{TValue, Task{Result}})"/>.</remarks>
     [OverloadResolutionPriority(1)]
-    public async Task<Result<TValue>> BindAndKeepValue(Func<TValue, Task<Result>> bind) =>
-        (await Bind(bind).ConfigureAwait(false))
+    public async Task<Result<TValue>> BindAndKeepValue(Func<TValue, Task<Result>> bind) => (await Bind(bind).ConfigureAwait(false))
             .WithValue(IsSuccess ? Value : default!);
 
     /// <summary>Binds the current result to another <see cref="Result{TNewValue}"/> using the specified <paramref name="bind"/> asynchronous function with the current <see cref="Value"/>.</summary>

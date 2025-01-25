@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class HasError
+public sealed class HasError
 {
     private class TestUnusedError(string errorMessage) : Error(errorMessage);
 

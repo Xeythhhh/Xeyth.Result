@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class HasSuccess
+public sealed class HasSuccess
 {
     private class TestUnusedSuccess(string successMessage) : Success(successMessage);
 

@@ -17,7 +17,9 @@ public abstract partial class ResultBase<TResult> : ResultBase
     public TResult WithReason(IReason reason)
     {
         ArgumentNullException.ThrowIfNull(reason);
+
         Reasons.Add(reason);
+
         return (TResult)this;
     }
 
@@ -29,7 +31,10 @@ public abstract partial class ResultBase<TResult> : ResultBase
     public TResult WithReasons(IEnumerable<IReason> reasons)
     {
         ArgumentNullException.ThrowIfNull(reasons);
-        Reasons.AddRange(reasons);
+
+        foreach (IReason reason in reasons)
+            Reasons.Add(reason);
+
         return (TResult)this;
     }
 

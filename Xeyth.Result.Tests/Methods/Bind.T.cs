@@ -2,9 +2,9 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class BindGeneric
+public sealed class BindGeneric
 {
-    public class ShouldBind
+    public sealed class ShouldBind
     {
         private const string Confirmation = "Bound to new result";
 
@@ -33,7 +33,7 @@ public class BindGeneric
             .Bind((_) => Result.Fail<int>(Confirmation)));
     }
 
-    public class ShouldNotBind
+    public sealed class ShouldNotBind
     {
         private const string Warning = "Should not bind!";
         private const string Error = "Initial Result Error";

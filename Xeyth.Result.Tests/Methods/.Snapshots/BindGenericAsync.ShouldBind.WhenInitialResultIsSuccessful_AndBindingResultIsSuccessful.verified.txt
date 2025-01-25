@@ -1,0 +1,33 @@
+﻿{
+  $type: Result,
+  IsFailed: false,
+  IsSuccess: true,
+  Reasons: {
+    $type: ObservableCollection<IReason>,
+    $values: [
+      {
+        $type: Success,
+        Message: Bound to new result,
+        Metadata: {
+          $type: Dictionary<string, object>
+        }
+      }
+    ]
+  },
+  Errors: {
+    $type: List<IError>,
+    $values: []
+  },
+  Successes: {
+    $type: List<ISuccess>,
+    $values: [
+      {
+        $type: Success,
+        Message: Bound to new result,
+        Metadata: {
+          $type: Dictionary<string, object>
+        }
+      }
+    ]
+  }
+}

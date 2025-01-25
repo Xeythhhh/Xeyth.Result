@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests;
 
-public class ConversionGeneric
+public sealed class ConversionGeneric
 {
     [Fact]
     public void ShouldConvertSingleErrorExplicitly() => Verify((Result<int>)new Error("Error"));

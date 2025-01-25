@@ -2,7 +2,7 @@
 
 public static class ToString
 {
-    public class NonGeneric
+    public sealed class NonGeneric
     {
         [Fact]
         public Task ShouldPrintSuccess() => Verify(Result.Ok()
@@ -13,7 +13,7 @@ public static class ToString
             .ToString());
     }
 
-    public class Generic
+    public sealed class Generic
     {
         [Fact]
         public Task ShouldPrintSuccess_ForValueType() => Verify(Result.Ok(420)

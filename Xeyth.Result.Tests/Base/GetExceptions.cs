@@ -5,7 +5,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class GetExceptions
+public sealed class GetExceptions
 {
     [Fact]
     public void ShouldFilterReturnExceptionsCorrectly()

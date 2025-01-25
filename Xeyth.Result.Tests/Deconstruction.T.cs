@@ -4,7 +4,7 @@ using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Tests;
 
-public class DeconstructionGeneric(ITestOutputHelper output)
+public sealed class DeconstructionGeneric(ITestOutputHelper output)
 {
     private const string errorMessage = "Error message";
     private const int Value = 420;

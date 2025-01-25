@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class WithError
+public sealed class WithError
 {
     [Fact]
     public void ShouldAddErrors()

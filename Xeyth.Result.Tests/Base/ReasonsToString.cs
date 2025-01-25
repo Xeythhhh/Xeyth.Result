@@ -6,7 +6,7 @@ using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class ReasonsToString(ITestOutputHelper output)
+public sealed class ReasonsToString(ITestOutputHelper output)
 {
     [Fact]
     public void ShouldReturnConcatenatedSuccessMessages()

@@ -5,7 +5,7 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class Metadata
+public sealed class Metadata
 {
     [Fact]
     public void HasMetadataKey_ShouldReturnTrue_WhenKeyExists() => new Success("Test").WithMetadata("Key", "Value")

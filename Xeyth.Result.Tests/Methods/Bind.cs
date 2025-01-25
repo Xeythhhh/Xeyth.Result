@@ -2,9 +2,9 @@
 
 namespace Xeyth.Result.Tests.Methods;
 
-public class Bind
+public sealed class Bind
 {
-    public class ShouldBind
+    public sealed class ShouldBind
     {
         private const string Confirmation = "Bound to new result";
 
@@ -25,7 +25,7 @@ public class Bind
             .Bind(() => Result.Fail<int>(Confirmation)));
     }
 
-    public class ShouldNotBind
+    public sealed class ShouldNotBind
     {
         private const string Warning = "Should not bind!";
         private const string Error = "Initial Result Error";

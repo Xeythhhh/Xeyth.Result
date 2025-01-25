@@ -1,4 +1,6 @@
-﻿using Xeyth.Result.Reasons.Abstract;
+﻿using System.Collections.ObjectModel;
+
+using Xeyth.Result.Reasons.Abstract;
 
 namespace Xeyth.Result.Abstract;
 
@@ -14,10 +16,6 @@ public interface IResultBase
     /// <value><see langword="true"/> if the result has no <see cref="IError"/>s; otherwise, <see langword="false"/>.</value>
     bool IsSuccess { get; }
 
-    /// <summary>Gets a collection of all <see cref="IReason"/>s in the result, including both <see cref="IError"/>s and <see cref="ISuccess"/>s.</summary>
-    /// <value>A <see cref="List{T}"/> containing all <see cref="IReason"/>s associated with the result.</value>
-    List<IReason> Reasons { get; }
-
     /// <summary>Gets a collection of all <see cref="IError"/>s contained in the result.</summary>
     /// <value>A <see cref="List{T}"/> containing all <see cref="IError"/>s associated with the result.</value>
     List<IError> Errors { get; }
@@ -25,4 +23,8 @@ public interface IResultBase
     /// <summary>Gets a collection of all <see cref="ISuccess"/>s contained in the result.</summary>
     /// <value>A <see cref="List{T}"/> containing all <see cref="ISuccess"/>s associated with the result.</value>
     List<ISuccess> Successes { get; }
+
+    /// <summary>Gets a collection of all <see cref="IReason"/>s in the result, including both <see cref="IError"/>s and <see cref="ISuccess"/>s.</summary>
+    /// <value>A <see cref="List{T}"/> containing all <see cref="IReason"/>s associated with the result.</value>
+    ObservableCollection<IReason> Reasons { get; }
 }

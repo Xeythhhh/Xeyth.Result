@@ -18,11 +18,30 @@ public class Error : IError
     /// If not explicitly set, it defaults to creating an instance of <see cref="Error"/>.</summary>
     /// <exception cref="ArgumentNullException">Throw when trying to set and <paramref name="value"/> is <see langword="null"/></exception>
     /// <exception cref="ArgumentNullException">Thrown by the default factory when the message is <see langword="null"/></exception>
+    /// <remarks>When modifying this factory, <see langword="lock"/> the <see cref="FactoryLock"/>.</remarks>
     public static Func<string, IError> Factory
     {
-        get => _factory;
-        set => _factory = value ?? throw new ArgumentNullException(nameof(value));
+        get
+        {
+            lock (FactoryLock)
+            {
+                return _factory;
+            }
+        }
+
+        set
+        {
+            lock (FactoryLock)
+            {
+                _factory = value ?? throw new ArgumentNullException(nameof(value));
+            }
+        }
     }
+
+    /// <summary>A synchronization object used to control access to the <see cref="Factory"/> property.</summary>
+    /// <remarks>When modifying the <see cref="Factory"/> property, use this lock to ensure thread safety.
+    /// <para>You can omit locking if this happens during startup before the factory can be used.</para></remarks>
+    public static Lock FactoryLock { get; } = new();
 
     /// <summary>The message describing the <see cref="Error"/>.</summary>
     public string Message { get; protected set; } = "Missing Error Message.";

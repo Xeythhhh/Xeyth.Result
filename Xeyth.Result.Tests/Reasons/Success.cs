@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class SuccessTests
+public sealed class SuccessTests
 {
     [Fact]
     public void ShouldCreateSuccessWithMessage() => Verify(new Success("Success"));
@@ -39,21 +39,19 @@ public class SuccessTests
     {
         // Arrange
 
-        Func<string, ISuccess> originalFactory = Success.Factory;
-
-        try
+        lock (Success.FactoryLock)
         {
+            Func<string, ISuccess> originalFactory = Success.Factory;
+            Success.Factory = message => new CustomSuccess($"(Success from overriden factory) {message}");
+
             // Act
 
-            Success.Factory = message => new CustomSuccess($"(Success from overriden factory) {message}");
             ISuccess success = Success.Factory("Success Message");
 
             // Assert
 
             Verify(success);
-        }
-        finally
-        {
+
             // Cleanup
 
             Success.Factory = originalFactory;

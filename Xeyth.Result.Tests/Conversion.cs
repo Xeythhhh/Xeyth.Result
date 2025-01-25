@@ -4,7 +4,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests;
 
-public class Conversion
+public sealed class Conversion
 {
     [Fact]
     public void ShouldConvertSingleErrorExplicitly() => Verify((Result)new Error("Error"));

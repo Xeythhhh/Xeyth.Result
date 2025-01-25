@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ExceptionalErrorTests
+public sealed class ExceptionalErrorTests
 {
     [Fact]
     public void ShouldCreateExceptionalErrorWithMessageAndException() => Verify(new ExceptionalError("Exceptional Error", new Exception("Exception")));

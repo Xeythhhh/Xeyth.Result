@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 
-using Xeyth.Result.Benchmarks.Methods;
+using Xeyth.Result.Benchmarks;
 
-BenchmarkRunner.Run<MapErrorsValueTaskBenchmarks>();
+//BenchmarkRunner.Run<MapErrorsValueTaskBenchmarks>();
+BenchmarkRunner.Run<ResultBenchmarks>();

@@ -4,7 +4,7 @@ using Xeyth.Result.Exceptions;
 
 namespace Xeyth.Result.Tests;
 
-public class Configuration
+public sealed class Configuration
 {
     [ModuleInitializer]
     internal static void Initialize()

@@ -7,7 +7,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ErrorTests
+public sealed class ErrorTests
 {
     [Fact]
     public void ShouldCreateErrorWithMessage() => Verify(new Error("Error"));
@@ -86,23 +86,21 @@ public class ErrorTests
     [Fact]
     public void ShouldCreateErrorAfterOverridingFactory()
     {
-        // Arrange
-
-        Func<string, IError> originalFactory = Error.Factory;
-
-        try
+        lock (Error.FactoryLock)
         {
+            // Arrange
+
+            Func<string, IError> originalFactory = Error.Factory;
+            Error.Factory = message => new CustomError($"(Error from overridden factory) {message}");
+
             // Act
 
-            Error.Factory = message => new CustomError($"(Error from overridden factory) {message}");
             IError error = Error.Factory("Error Message");
 
             // Assert
 
             Verify(error);
-        }
-        finally
-        {
+
             // Cleanup
 
             Error.Factory = originalFactory;
@@ -113,12 +111,15 @@ public class ErrorTests
     public void CastError_ShouldReturnCastedError_WhenTypeMatches()
     {
         // Arrange
+
         CustomError error = new("Custom Error message");
 
         // Act
+
         Error castedError = error.CastError<Error>();
 
         // Assert
+
         castedError.ShouldBeOfType<CustomError>();
         castedError.ShouldBe(error);
     }
@@ -127,9 +128,11 @@ public class ErrorTests
     public void CastError_ShouldThrow_WhenTypeMismatch()
     {
         // Arrange
+
         Error error = new("Error message");
 
         // Act & Assert
+
         Should.Throw<InvalidCastException>(() => error.CastError<CustomError>());
     }
 }

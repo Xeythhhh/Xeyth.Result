@@ -4,7 +4,7 @@ using Xeyth.Result.Reasons;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class HasException
+public sealed class HasException
 {
     [Fact]
     public void ShouldIdentifyExceptionPresence()

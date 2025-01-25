@@ -2,7 +2,7 @@
 
 namespace Xeyth.Result.Tests.Reasons;
 
-public class ReasonStringBuilderTests
+public sealed class ReasonStringBuilderTests
 {
     [Fact]
     public void ShouldSetReasonType() => Verify(new ReasonStringBuilder()

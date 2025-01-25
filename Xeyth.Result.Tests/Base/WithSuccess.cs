@@ -6,7 +6,7 @@ using Xeyth.Result.Tests.TypesForTesting;
 
 namespace Xeyth.Result.Tests.Base;
 
-public class WithSuccess
+public sealed class WithSuccess
 {
     [Fact]
     public void ShouldAddSuccesss()
