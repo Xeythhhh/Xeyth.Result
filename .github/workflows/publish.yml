@@ -44,7 +44,7 @@ jobs:
           $versionApiUrl = "$githubApiUrl/packages/nuget/$project/versions"
       
           try {
-            $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}", Accept = "application/vnd.github+json" }
+            $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
             $allVersions = $response.versions
             $currentVersion = $allVersions[-1].name # Get the latest version
           } catch {
