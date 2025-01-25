@@ -46,10 +46,10 @@ jobs:
       
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
-            Write-Host $response.items.Count
+            Write-Host $response.items?.Count
             foreach ($version in $response.items)
             {
-              Write-Host $version.name
+              Write-Host "version: $($version.name)""
             }
             $currentVersion = $response.items[0].name
           } 
