@@ -46,8 +46,11 @@ jobs:
       
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
-            $allVersions = $response.items
-            $currentVersion = $allVersions[-1].name # Get the latest version
+            foreach ($version in $response.items)
+            {
+              Write-Host "$version.name"
+            }
+            $currentVersion = $response.items[0].name
           } 
           catch {
             Write-Host "Error Message: $($_.Exception.Message)"
