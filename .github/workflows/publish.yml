@@ -1,9 +1,12 @@
 name: Publish Packages
 
 on:
-  push:
-    tags:
-      - 'pack-*'
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: 'Version increment type (major, minor, patch)'
+        required: true
+        default: 'patch'
 
 jobs:
   publish:
@@ -61,7 +64,8 @@ jobs:
             $patch = [int]$Matches[3]
       
             # Increment the appropriate version part
-            switch ($tag) {
+            $increment = "${{ github.event.inputs.increment }}"
+            switch ($increment) {
               'pack-major' { $major++; $minor = 0; $patch = 0 }
               'pack-minor' { $minor++; $patch = 0 }
               'pack-patch' { $patch++ }
