@@ -3,7 +3,7 @@
   IsFailed: false,
   IsSuccess: true,
   Reasons: {
-    $type: List<IReason>,
+    $type: ObservableCollection<IReason>,
     $values: [
       {
         $type: Success,

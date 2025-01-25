@@ -17,9 +17,8 @@ public partial class Result
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return await Try(async () => (await bind().ConfigureAwait(false))
-                .WithReasons(Reasons))
-            .ConfigureAwait(false);
+        return (await bind().ConfigureAwait(false))
+            .WithReasons(Reasons);
     }
 
     /// <summary>Binds the current result to another <see cref="Result{TValue}"/> using the specified <paramref name="bind"/> asynchronous function.</summary>
@@ -34,8 +33,7 @@ public partial class Result
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return await Try(async () => (await bind().ConfigureAwait(false))
-                .WithReasons(Reasons))
-            .ConfigureAwait(false);
+        return (await bind().ConfigureAwait(false))
+            .WithReasons(Reasons);
     }
 }

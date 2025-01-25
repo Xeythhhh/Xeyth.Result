@@ -9,7 +9,7 @@ public sealed class BindAsync
         private const string Confirmation = "Bound to new result";
 
         [Fact]
-        public void WhenInitialResultIsSuccessful_AndBindingResultIsSuccessful() => Verify(() => Result.Ok()
+        public Task WhenInitialResultIsSuccessful_AndBindingResultIsSuccessful() => Verify(() => Result.Ok()
             .Bind(() => Task.FromResult(Result.Ok().WithSuccess(Confirmation))));
 
         [Fact]

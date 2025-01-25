@@ -26,4 +26,13 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        dotnet test --no-build --coverage --coverage-output-format xml --coverage-output coverage.xml  --configuration Release --verbosity normal
+        ReportGenerator -reports:Xeyth.Result.Tests\bin\Release\net9.0\TestResults\coverage.xml -targetdir:CoverageReport
+    
+    - name: Upload coverage report as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: CoverageReport/

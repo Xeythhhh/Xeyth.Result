@@ -15,9 +15,8 @@ public partial class Result<TValue>
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return await Result.Try((Func<ValueTask<Result>>)(async () => (await bind(Value).ConfigureAwait(false))
-                .WithReasons(Reasons)))
-            .ConfigureAwait(false);
+        return (await bind(Value).ConfigureAwait(false))
+            .WithReasons(Reasons);
     }
 
     /// <summary>Binds the current result to another <see cref="Result"/> using the specified <paramref name="bind"/> <see cref="ValueTask"/> function and keeps the <typeparamref name="TValue"/> value.</summary>
@@ -41,8 +40,7 @@ public partial class Result<TValue>
         if (IsFailed) return ToResult<TNewValue>();
         ArgumentNullException.ThrowIfNull(bind);
 
-        return await Result.Try((Func<ValueTask<Result<TNewValue>>>)(async () => (await bind(Value).ConfigureAwait(false))
-                .WithReasons(Reasons)))
-            .ConfigureAwait(false);
+        return (await bind(Value).ConfigureAwait(false))
+            .WithReasons(Reasons);
     }
 }

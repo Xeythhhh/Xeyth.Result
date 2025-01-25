@@ -6,6 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.Result", "Xeyth.Resul
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E475153C-36B4-47B5-B560-74A01AFB88B2}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		.github\workflows\build.yml = .github\workflows\build.yml
 		LICENSE = LICENSE
 		.github\workflows\publish.yml = .github\workflows\publish.yml

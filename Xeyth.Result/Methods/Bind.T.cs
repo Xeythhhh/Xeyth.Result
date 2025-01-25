@@ -15,7 +15,7 @@ public partial class Result<TValue>
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return Result.Try(() => bind(Value).WithReasons(Reasons));
+        return bind(Value).WithReasons(Reasons);
     }
 
     /// <summary>Binds the current result to another <see cref="Result"/> using the specified <paramref name="bind"/> function and keeps the <typeparamref name="TValue"/> value.</summary>
@@ -24,9 +24,10 @@ public partial class Result<TValue>
     /// otherwise, the current result.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="bind"/> function is <see langword="null"/>.</exception>
     /// <remarks>This method delegates to <see cref="Bind(Func{TValue, Result})"/>.</remarks>
-    public Result<TValue> BindAndKeepValue(Func<TValue, Result> bind) => Bind(bind)
-        .WithValue(IsSuccess ? Value : default!)
-        .WithReasons(Reasons);
+    public Result<TValue> BindAndKeepValue(Func<TValue, Result> bind) =>
+        Bind(bind)
+            .WithValue(IsSuccess ? Value : default!)
+            .WithReasons(Reasons);
 
     /// <summary>Binds the current result to another <see cref="Result{TNewValue}"/> using the specified <paramref name="bind"/> function with the current <see cref="Value"/>.</summary>
     /// <typeparam name="TNewValue">The type of the value encapsulated by the new result.</typeparam>
@@ -39,6 +40,6 @@ public partial class Result<TValue>
         if (IsFailed) return ToResult<TNewValue>();
         ArgumentNullException.ThrowIfNull(bind);
 
-        return Result.Try(() => bind(Value).WithReasons(Reasons));
+        return bind(Value).WithReasons(Reasons);
     }
 }

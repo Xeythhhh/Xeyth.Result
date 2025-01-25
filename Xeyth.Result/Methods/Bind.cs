@@ -14,7 +14,7 @@ public partial class Result
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return Try(() => bind().WithReasons(Reasons));
+        return bind().WithReasons(Reasons);
     }
 
     /// <summary>Binds the current result to another <see cref="Result{TValue}"/> using the specified <paramref name="bind"/> function.</summary>
@@ -28,6 +28,6 @@ public partial class Result
         if (IsFailed) return this;
         ArgumentNullException.ThrowIfNull(bind);
 
-        return Try(() => bind().WithReasons(Reasons));
+        return bind().WithReasons(Reasons);
     }
 }
