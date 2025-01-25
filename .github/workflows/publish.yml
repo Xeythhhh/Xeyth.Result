@@ -34,7 +34,7 @@ jobs:
       shell: pwsh
       run: |
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
-        $packageApiUrl = "https://api.github.com/${{ github.repository_owner }}/packages/nuget/"
+        $packageApiUrl = "https://api.github.com/users/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
 
