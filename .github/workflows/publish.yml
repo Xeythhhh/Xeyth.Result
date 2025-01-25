@@ -33,7 +33,29 @@ jobs:
     - name: Increment Version and Pack
       shell: pwsh
       run: |
-        $projects = @("Xeyth.Result", "Xeyth.Primitives")
+        # Get all projects matching the criteria
+        $projects = Get-ChildItem -Recurse -Filter '*.csproj' | Where-Object {
+            $_.FullName -like '*Xeyth.*' -and
+            $_.FullName -notlike '*.Tests.csproj' -and
+            $_.FullName -notlike '*.Benchmarks.csproj'
+        } | ForEach-Object {
+            $csprojContent = Get-Content $_.FullName
+            if ($csprojContent -notmatch '<IsPackable>\s*false\s*</IsPackable>') {
+                $_.FullName
+            }
+        }
+        
+        if (-not $projects) {
+            Write-Host "No packable projects found."
+            exit 0
+        }
+        
+        # Convert project file paths to project names
+        $projects = $projects | ForEach-Object {
+            [System.IO.Path]::GetFileNameWithoutExtension($_)
+        }
+        Write-Host "Found projects: $($projects -join ', ')"
+
         $packageApiUrl = "https://api.github.com/users/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
