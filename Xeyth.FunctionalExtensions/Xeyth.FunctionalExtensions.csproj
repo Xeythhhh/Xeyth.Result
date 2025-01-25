@@ -3,7 +3,10 @@
   <PropertyGroup>
     <Authors>Xeyth</Authors>
     <PackageId>Xeyth.FunctionalExtensions</PackageId>
-    <Description>A library for referencing all Xeyt.* functional extensions packages.</Description>
+    <Description>
+      A convenience package that references all Xeyth functional extensions.
+      Add this package to include Xeyth.Result, Xeyth.Result.Benchmarks, and others automatically.
+    </Description>
     <PackageTags>Functional;Utility</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
