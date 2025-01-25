@@ -36,17 +36,17 @@ jobs:
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
       
         # GitHub Packages base API endpoint
-        $githubApiUrl = "https://nuget.pkg.github.com/${{ github.repository_owner }}"
+        $githubApiUrl = "https://api.github.com/orgs/${{ github.repository_owner }}
       
         foreach ($project in $projects) {
           # Fetch the latest version from GitHub Packages
           $packageName = $project -replace '\.', '-'
-          $versionApiUrl = "$githubApiUrl/v3-flatcontainer/$packageName/index.json"
+          $versionApiUrl = "$githubApiUrl/packages/nuget/$project/versions"
       
           try {
-            $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}" }
+            $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}", Accept = "application/vnd.github+json" }
             $allVersions = $response.versions
-            $currentVersion = $allVersions[-1] # Get the latest version
+            $currentVersion = $allVersions[-1].name # Get the latest version
           } catch {
             Write-Host "Failed to fetch version for $project. Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
