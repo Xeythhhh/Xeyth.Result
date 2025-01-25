@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal -- --coverage --coverage-output-format xml --coverage-output coverage.xml
 
-    - name: ReportGenerator
+    - name: Generate Test Coverage Report 
       uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
       with:
         reports: Xeyth.Result.Tests/bin/Release/net9.0/TestResults/coverage.xml
@@ -37,8 +37,23 @@ jobs:
         title: 'Xeyth.Result Test Coverage'
         tag: ${{ github.sha }}
 
-    - name: Upload coverage report as artifact
+    - name: Upload test coverage report as artifact
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: TestCoverageReport/
+
+    - name: Clean the GitHub Pages branch
+      run:  |
+        git fetch origin gh-pages-test-coverage
+        git checkout gh-pages-test-coverage
+        # Remove all files except TestCoverageReport
+        find . -mindepth 1 ! -name 'TestCoverageReport' -exec rm -rf {} \;
+        git commit -am "Clean old files before deploying new coverage report"
+
+    - name: Push test coverage report to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages-test-coverage
+        folder: TestCoverageReport
+        token: ${{ secrets.GITHUB_TOKEN }}
