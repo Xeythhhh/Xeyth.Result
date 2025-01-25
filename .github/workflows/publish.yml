@@ -37,27 +37,13 @@ jobs:
         $packageApiUrl = "https://api.github.com/users/${{ github.repository_owner }}/packages/nuget/"
       
         foreach ($project in $projects) {
-
-          Write-Host " "
-          Write-Host "---$($project)---"
           $packageName = $project -replace '\.', '-'
           $versionApiUrl = "$($packageApiUrl)$($project)/versions"
-          Write-Host "Fetching versions from: $($versionApiUrl)"
-      
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
-            Write-Host $response?.Count
-            foreach ($version in $response)
-            {
-              Write-Host "version: $($version.name)"
-            }
             $currentVersion = $response[0].name
           } 
           catch {
-            Write-Host "Error Message: $($_.Exception.Message)"
-            if ($_.Exception.Response -ne $null) {
-              Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
-            }
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
           }
@@ -77,11 +63,8 @@ jobs:
               default { Write-Host "Unknown increment: $($increment). Skipping $($project)."; continue }
             }
       
-            # Construct the new version
             $newVersion = "$($major).$($minor).$($patch)"
             Write-Host "Updated $($project) to version $($newVersion)."
-      
-            # Pack the project
             dotnet pack "$($project)/$($project).csproj" --no-build --configuration Release -o ./artifacts /p:PackageVersion=$newVersion
           } 
           else {
@@ -92,6 +75,6 @@ jobs:
     - name: Publish Packages
       if: success()  # Only run if previous steps succeed
       run: | 
-        # dotnet nuget add source --username Xeythhhh --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Xeythhhh/index.json"
-        # dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source github
-        # dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json"
+        dotnet nuget add source --username Xeythhhh --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Xeythhhh/index.json"
+        dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source github
+        dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json"
