@@ -37,9 +37,7 @@ jobs:
       run: sed -i "s/<Version>.*<\/Version>/<Version>${{ env.VERSION }}<\/Version>/" Xeyth.Result/Xeyth.Result.csproj
 
     - name: Pack
-      run: |
-        dotnet nuget verify
-        dotnet pack ./Xeyth.Result/Xeyth.Result.csproj --no-build --configuration Release -o ./artifacts
+      run: dotnet pack ./Xeyth.Result/Xeyth.Result.csproj --no-build --configuration Release -o ./artifacts
 
     - name: Publish Packages
       if: success()  # Only run if previous steps succeed
