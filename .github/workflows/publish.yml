@@ -78,7 +78,7 @@ jobs:
             }
       
             # Construct the new version
-            $newVersion = "$major.$minor.$patch"
+            $newVersion = "$($major).$($minor).$($patch)"
             Write-Host "Updated $project to version $newVersion."
       
             # Pack the project
