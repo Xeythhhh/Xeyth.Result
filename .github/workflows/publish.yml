@@ -27,12 +27,6 @@ jobs:
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
 
-    - name: Set Version from Git Tag
-      id: version
-      run: |
-        VERSION=$(echo ${GITHUB_REF#refs/tags/} | sed 's/^v//')  # Extract version from tag
-        echo "Version=${VERSION}" >> $GITHUB_ENV
-    
     - name: Increment Version and Pack
       shell: pwsh
       run: |
