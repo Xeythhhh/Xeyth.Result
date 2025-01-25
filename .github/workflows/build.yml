@@ -47,7 +47,7 @@ jobs:
       run:  |
         git fetch origin gh-pages-test-coverage
         git checkout gh-pages-test-coverage
-        find . -path ./.git -prune -o -path ./TestCoverageReport -prune -o -exec rm -rf {} +
+        find . -mindepth 1 -path ./.git -prune -o -path ./TestCoverageReport -prune -o -exec rm -rf {} +
         git add .
         git commit -m "Cleaned up the repository to only include TestCoverageReport"
         git push origin gh-pages-test-coverage
