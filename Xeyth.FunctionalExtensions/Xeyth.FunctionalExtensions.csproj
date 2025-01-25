@@ -5,7 +5,7 @@
     <PackageId>Xeyth.FunctionalExtensions</PackageId>
     <Description>
       A convenience package that references all Xeyth functional extensions.
-      Add this package to include Xeyth.Result, Xeyth.Result.Benchmarks, and others automatically.
+      Add this package to include Xeyth.Result, Xeyth.Primitives, and others automatically.
     </Description>
     <PackageTags>Functional;Utility</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
