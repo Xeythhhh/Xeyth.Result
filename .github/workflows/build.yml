@@ -47,8 +47,11 @@ jobs:
       run:  |
         git fetch origin gh-pages-test-coverage
         git checkout gh-pages-test-coverage
-        # List all files and directories in the current directory
-        ls -R
+        find . -path ./.git -prune -o -path ./TestCoverageReport -prune -o -exec rm -rf {} +
+        git add .
+        git commit -m "Cleaned up the repository to only include TestCoverageReport"
+        git push origin gh-pages-test-coverage
+
 
     - name: Push test coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
