@@ -34,11 +34,6 @@ jobs:
       shell: pwsh
       run: |
         $projects = @("Xeyth.Result", "Xeyth.Primitives")
-        $tag = "$(git describe --tags --exact-match)" # Get the current tag
-        if (-not $tag) {
-          Write-Host "No tag found. Skipping version increment and packing."
-          exit 0
-        }
       
         # GitHub Packages base API endpoint
         $githubApiUrl = "https://nuget.pkg.github.com/${{ github.repository_owner }}"
