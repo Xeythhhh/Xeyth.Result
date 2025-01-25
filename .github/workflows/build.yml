@@ -24,18 +24,21 @@ jobs:
 
     - name: Build
       run: dotnet build --no-restore --configuration Release
-
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
+    
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal -- --coverage --coverage-output-format xml --coverage-output coverage.xml
-    
-    - name: Generate Report
-      run: ReportGenerator -reports:Xeyth.Result.Tests\bin\Release\net9.0\TestResults\coverage.xml -targetdir:CoverageReport
+
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
+      with:
+        reports: Xeyth.Result.Tests/bin/Release/net9.0/TestResults/coverage.xml
+        targetdir: TestCoverageReport
+        reporttypes: Html_Dark
+        title: 'Xeyth.Result Test Coverage'
+        tag: ${{ github.sha }}
 
     - name: Upload coverage report as artifact
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
-        path: CoverageReport/
+        path: TestCoverageReport/
