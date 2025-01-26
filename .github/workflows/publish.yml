@@ -69,10 +69,7 @@ jobs:
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
             $currentVersion = $response[0].name
-            $lastPackaged = $response[0].metadata.repositoryCommit
-            $response[0].metadata.PSObject.Properties | ForEach-Object {
-                Write-Host "$($_.Name) = $($_.Value)"
-            }
+            $lastPackaged = # extract commit from Description "...{rest of description} built with commit $currentCommit"
           } 
           catch {
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
@@ -109,17 +106,12 @@ jobs:
             $projectFile = "$($project)/$($project).csproj"
             [xml]$csproj = Get-Content $projectFile
 
-            $repositoryCommitNode = $csproj.Project.PropertyGroup.RepositoryCommit
-            if (-not $repositoryCommitNode) {
-                # If missing, add the <RepositoryCommit> element
-                 $newNode = $csproj.CreateElement("RepositoryCommit")
-                 $newNode.InnerText = $currentCommit
-                 $csproj.Project.PropertyGroup.AppendChild($newNode) | Out-Null
-                 Write-Host "Added <RepositoryCommit> to the project file."
+            # TODO append "built with commit $currentCommit"
+            $descriptionNode = $csproj.Project.PropertyGroup.Description
+            if (-not $descriptionNode) {
+                # add description node and value
             } else {
-                # If it exists, update the value
-                $repositoryCommitNode.InnerText = $currentCommit
-                Write-Host "Updated <RepositoryCommit> in the project file."
+                # update description as description + "built with commit $currentCommit"
             }
             $csproj.Save($projectFile)
             

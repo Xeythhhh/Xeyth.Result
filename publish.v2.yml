@@ -1,0 +1,122 @@
+name: Version and Publish Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: 'Version increment type (major, minor, patch)'
+        required: true
+        default: 'patch'
+
+jobs:
+  version-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout package-versioning branch
+        uses: actions/checkout@v4
+        with:
+          ref: package-versioning
+
+      - name: Merge main into package-versioning
+        run: |
+          git pull origin main
+          git merge main
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build projects
+        run: dotnet build --no-restore --configuration Release
+        
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal
+
+      - name: Determine changes
+        id: changes
+        shell: pwsh
+        run: |
+          $projects = Get-ChildItem -Recurse -Filter '*.csproj' | Where-Object {
+                  $_.FullName -like '*Xeyth.*' -and
+                  $_.FullName -notlike '*.Tests.csproj' -and
+                  $_.FullName -notlike '*.Benchmarks.csproj'
+              } | ForEach-Object {
+                  $csprojContent = Get-Content $_.FullName
+                  if ($csprojContent -notmatch '<IsPackable>\s*false\s*</IsPackable>') {
+                      $_.FullName
+                  }
+              } | ForEach-Object {
+                  [System.IO.Path]::GetFileNameWithoutExtension($_)
+              }
+
+          if (-not $projects) {
+              Write-Host "No packable projects found."
+              exit 0
+          }
+
+          Write-Host "Found projects: $($projects -join ', ')"
+
+          $currentCommit = git rev-parse HEAD # get current commit, change if needed
+
+          $changedProjects = @()
+          foreach ($project in $projects) {
+            $packageVersionFile = "$project/.packageVersion"
+            if (Test-Path $packageVersionFile) {
+              $lastPackagedCommit = $packageVersionContent[0]
+              $lastPackagedVersion = $packageVersionContent[1]
+            } else {
+              $lastPackagedCommit = $null
+              $lastPackagedVersion = "1.0.0"
+            }
+
+            if ($lastPackagedCommit == $null) {
+              $hasChanges = true
+            } else {
+              $hasChanges = git diff --name-only $lastPackaged..$currentCommit $project
+              if ($hasChanges) {
+                Write-Host "Changes detected in $project"
+                $changedProjects += "$project:$lastPackagedVersion"
+              }else{
+                Write-Host "No changes detected for $($project). Skipping."
+                continue
+              }
+            }
+          }
+          $changedProjects | Out-File -FilePath 
+
+      # - name: Pack projects
+      #   if: steps.changes.outputs.changed_projects
+      #   run: |
+      #     while IFS= read -r project; do
+      #       dotnet pack $project/$project.csproj --configuration Release --output ./nupkg
+      #     done < changed_projects.txt
+      # 
+      # - name: Publish packages
+      #   if: steps.changes.outputs.changed_projects
+      #   run: |
+      #     while IFS= read -r project; do
+      #       dotnet nuget push ./nupkg/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+      #     done < changed_projects.txt
+      # 
+      # - name: Update versioning information
+      #   if: steps.changes.outputs.changed_projects
+      #   run: |
+      #     while IFS= read -r project; do
+      #       echo "Updating versioning information for $project"
+      #       echo "Last commit: $(git rev-parse HEAD)" > package-versioning/$project/version.txt
+      #     done < changed_projects.txt
+      # 
+      # - name: Commit and push changes
+      #   if: steps.changes.outputs.changed_projects
+      #   run: |
+      #     cd package-versioning
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #     git add .
+      #     git commit -m "Update versioning information for packed projects"
+      #     git push origin package-versioning
