@@ -74,7 +74,7 @@ jobs:
               $lastPackagedVersion = "1.0.0"
             }
 
-            if ($lastPackagedCommit == $null) {
+            if ($lastPackagedCommit -eq $null) {
               $hasChanges = true
             } else {
               $hasChanges = git diff --name-only $lastPackaged..$currentCommit $project
