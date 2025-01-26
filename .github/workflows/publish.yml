@@ -107,11 +107,23 @@ jobs:
             $repositoryCommitNode = $csproj.Project.PropertyGroup.RepositoryCommit
             if (-not $repositoryCommitNode) {
                 # If missing, add the <RepositoryCommit> element
-                $propertyGroup = $csproj.Project.PropertyGroup[0] # Assuming a single PropertyGroup
-                $newNode = $csproj.CreateElement("RepositoryCommit")
-                $newNode.InnerText = $currentCommit
-                $propertyGroup.AppendChild($newNode) | Out-Null
-                Write-Host "Added <RepositoryCommit> to the project file."
+
+                # Fetch the PropertyGroup
+                $propertyGroup = $csproj.Project.PropertyGroup
+                
+                # Display the PropertyGroup
+                $propertyGroup | ForEach-Object {
+                    Write-Host "PropertyGroup:"
+                    $_.ChildNodes | ForEach-Object {
+                        Write-Host "  $($_.Name) = $($_.InnerText)"
+                    }
+                }
+
+                # $propertyGroup = $csproj.Project.PropertyGroup[0] # Assuming a single PropertyGroup
+                # $newNode = $csproj.CreateElement("RepositoryCommit")
+                # $newNode.InnerText = $currentCommit
+                # $propertyGroup.AppendChild($newNode) | Out-Null
+                # Write-Host "Added <RepositoryCommit> to the project file."
             } else {
                 # If it exists, update the value
                 $repositoryCommitNode.InnerText = $currentCommit
