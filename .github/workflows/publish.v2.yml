@@ -77,13 +77,14 @@ jobs:
               $hasChanges = true
             } else {
               $hasChanges = git diff --name-only $lastPackaged..$currentCommit $project
-              if ($hasChanges) {
-                Write-Host "Changes detected in $project"
-                $changedProjects += "$($project):$($lastPackagedVersion)"
-              }else{
-                Write-Host "No changes detected for $($project). Skipping."
-                continue
-              }
+            }
+
+            if ($hasChanges) {
+              Write-Host "Changes detected in $project"
+              $changedProjects += "$($project):$($lastPackagedVersion)"
+            } else {
+              Write-Host "No changes detected for $($project). Skipping."
+              continue
             }
           }
           
