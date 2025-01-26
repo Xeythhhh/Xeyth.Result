@@ -64,7 +64,7 @@ jobs:
 
           $changedProjects = @()
           foreach ($project in $projects) {
-            $packageVersionFile = "$project/.packageVersion"
+            $packageVersionFile = "$($project)/.packageVersion"
             if (Test-Path $packageVersionFile) {
               $lastPackagedCommit = $packageVersionContent[0]
               $lastPackagedVersion = $packageVersionContent[1]
@@ -72,6 +72,9 @@ jobs:
               $lastPackagedCommit = $null
               $lastPackagedVersion = "1.0.0"
             }
+            
+            Write-Host $lastPackagedCommit
+            Write-Host $lastPackagedVersion
 
             if ($lastPackagedCommit -eq $null) {
               $hasChanges = true
