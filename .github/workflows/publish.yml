@@ -101,7 +101,7 @@ jobs:
             }
       
             $newVersion = "$($major).$($minor).$($patch)"
-            $projectFile = $($project)/$($project).csproj
+            $projectFile = "$($project)/$($project).csproj"
             [xml]$csproj = Get-Content $projectFile
 
             $repositoryCommitNode = $csproj.Project.PropertyGroup.RepositoryCommit
