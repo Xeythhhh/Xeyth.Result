@@ -72,12 +72,12 @@ jobs:
           catch {
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
-            $lastPackaged = null
+            $lastPackaged = $null
           }  
           
           Write-Host "Last packaged @ $lastPackaged"
 
-          if ($lastPackaged != null){
+          if ($lastPackaged -ne $null){
             $hasChanges = git diff --name-only $lastPackaged..$currentCommit $project
             if (-not $hasChanges) {
               Write-Host "No changes detected for $($project). Skipping."
