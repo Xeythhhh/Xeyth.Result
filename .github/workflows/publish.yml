@@ -70,6 +70,9 @@ jobs:
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
             $currentVersion = $response[0].name
             $lastPackaged = $response[0].metadata.repositoryCommit
+            $response[0].metadata.PSObject.Properties | ForEach-Object {
+                Write-Host "$($_.Name) = $($_.Value)"
+            }
           } 
           catch {
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
