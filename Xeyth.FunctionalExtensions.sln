@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -7,16 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E475153C-36B4-47B5-B560-74A01AFB88B2}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		.github\workflows\build.yml = .github\workflows\build.yml
 		LICENSE = LICENSE
-		.github\workflows\publish.yml = .github\workflows\publish.yml
-		.github\workflows\publish.v2.yml = .github\workflows\publish.v2.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.Result.Benchmarks", "Xeyth.Result.Benchmarks\Xeyth.Result.Benchmarks.csproj", "{0F5E3129-2630-47EF-9420-571037B7B4B9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.Result.Tests", "Xeyth.Result.Tests\Xeyth.Result.Tests.csproj", "{B8A3EFE5-1A8A-4C29-88D9-9A357BEB5139}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.Primitives", "Xeyth.Primitives\Xeyth.Primitives.csproj", "{6C16B28C-ABA0-4B82-9328-08900A8B02B5}"
 EndProject
@@ -24,14 +20,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.FunctionalExtensions"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{B2A37B09-5239-41BB-8F09-8742F0B78E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeyth.Result.UnitTests", "Xeyth.Result.UnitTests\Xeyth.Result.UnitTests.csproj", "{420ECE83-EF49-4048-82EC-9BE1C44F00E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2A37B09-5239-41BB-8F09-8742F0B78E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2A37B09-5239-41BB-8F09-8742F0B78E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1E4AEA4-5A4C-40F1-8F74-D77B482500C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1E4AEA4-5A4C-40F1-8F74-D77B482500C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1E4AEA4-5A4C-40F1-8F74-D77B482500C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,10 +36,6 @@ Global
 		{0F5E3129-2630-47EF-9420-571037B7B4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5E3129-2630-47EF-9420-571037B7B4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5E3129-2630-47EF-9420-571037B7B4B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8A3EFE5-1A8A-4C29-88D9-9A357BEB5139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8A3EFE5-1A8A-4C29-88D9-9A357BEB5139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8A3EFE5-1A8A-4C29-88D9-9A357BEB5139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8A3EFE5-1A8A-4C29-88D9-9A357BEB5139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C16B28C-ABA0-4B82-9328-08900A8B02B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C16B28C-ABA0-4B82-9328-08900A8B02B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C16B28C-ABA0-4B82-9328-08900A8B02B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +44,12 @@ Global
 		{2E4AF62C-A5EB-45FE-BBD0-CA4DD7206879}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E4AF62C-A5EB-45FE-BBD0-CA4DD7206879}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E4AF62C-A5EB-45FE-BBD0-CA4DD7206879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2A37B09-5239-41BB-8F09-8742F0B78E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A37B09-5239-41BB-8F09-8742F0B78E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420ECE83-EF49-4048-82EC-9BE1C44F00E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420ECE83-EF49-4048-82EC-9BE1C44F00E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420ECE83-EF49-4048-82EC-9BE1C44F00E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420ECE83-EF49-4048-82EC-9BE1C44F00E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
