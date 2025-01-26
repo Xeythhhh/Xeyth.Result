@@ -90,7 +90,12 @@ jobs:
               continue
             }
           }
-          
+
+          if ($changedProjects.Count -eq 0) {
+              Write-Host "No changes detected in any projects."
+              exit 0
+          }
+
           $changedProjectsString = $changedProjects -join ','
           Write-Output "changed_projects=$changedProjectsString" >> $GITHUB_ENV
           
