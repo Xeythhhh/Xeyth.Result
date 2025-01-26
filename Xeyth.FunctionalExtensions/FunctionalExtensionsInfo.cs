@@ -11,7 +11,7 @@ public static class FunctionalExtensionsInfo
 
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
     [SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration", Justification = "<Pending>")]
-    private const int ArbitraryNumberToForceChangesOnGit = 69;
+    private const int ArbitraryNumberToForceChangesOnGit = 69; // completely random value
 
     [ModuleInitializer]
     [SuppressMessage("Usage", "CA2255:The 'ModuleInitializer' attribute should not be used in libraries", Justification = "<Pending>")]

@@ -30,7 +30,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
 
-    - name: Increment Version and Pack
+    - name: Pack
       shell: pwsh
       run: |
         # Get all projects matching the criteria
@@ -57,27 +57,34 @@ jobs:
         Write-Host "Found projects: $($projects -join ', ')"
 
         $packageApiUrl = "https://api.github.com/users/${{ github.repository_owner }}/packages/nuget/"
-      
+        $currentCommit = git rev-parse HEAD
+        
         foreach ($project in $projects) {
           
-          $hasChanges = git diff-tree --no-commit-id --name-only -r HEAD | Select-String -Pattern "$project/*"
-          Write-Host $hasChanges
-          if (-not $hasChanges) {
-            Write-Host "No changes detected for $($project). Skipping."
-            continue
-          }
-
           $packageName = $project -replace '\.', '-'
           $versionApiUrl = "$($packageApiUrl)$($project)/versions"
+          
           try {
             $response = Invoke-RestMethod -Uri $versionApiUrl -Headers @{ Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"; Accept = "application/vnd.github+json" }
             $currentVersion = $response[0].name
+            $lastPackaged = $response[0].metadata.repositoryCommit
           } 
           catch {
             Write-Host "Failed to fetch version for $($project). Defaulting to 1.0.0."
             $currentVersion = "1.0.0"
-          }
+            $lastPackaged = null
+          }  
+          
+          Write-Host "Last packaged @ $lastPackaged"
 
+          if ($lastPackaged != null){
+            $hasChanges = git diff --name-only $lastPackaged..$currentCommit $project
+            if (-not $hasChanges) {
+              Write-Host "No changes detected for $($project). Skipping."
+              continue
+            }
+          }
+          
           # Parse the current version
           if ($currentVersion -match '^(\d+)\.(\d+)\.(\d+)$') {
             $major = [int]$Matches[1]
@@ -94,17 +101,33 @@ jobs:
             }
       
             $newVersion = "$($major).$($minor).$($patch)"
+            $projectFile = $($project)/$($project).csproj
+            [xml]$csproj = Get-Content $projectFile
+
+            $repositoryCommitNode = $csproj.Project.PropertyGroup.RepositoryCommit
+            if (-not $repositoryCommitNode) {
+                # If missing, add the <RepositoryCommit> element
+                $propertyGroup = $csproj.Project.PropertyGroup[0] # Assuming a single PropertyGroup
+                $newNode = $csproj.CreateElement("RepositoryCommit")
+                $newNode.InnerText = $currentCommit
+                $propertyGroup.AppendChild($newNode) | Out-Null
+                Write-Host "Added <RepositoryCommit> to the project file."
+            } else {
+                # If it exists, update the value
+                $repositoryCommitNode.InnerText = $currentCommit
+                Write-Host "Updated <RepositoryCommit> in the project file."
+            }
+            $csproj.Save($projectFile)
+            
             Write-Host "Updated $($project) to version $($newVersion)."
-            dotnet pack "$($project)/$($project).csproj" --no-build --configuration Release -o ./artifacts /p:PackageVersion=$newVersion
-          } 
-          else {
-            Write-Host "Failed to parse current version for $($project). Skipping." 
-          }
+            
+            dotnet pack $projectFile --no-build --configuration Release -o ./artifacts /p:PackageVersion=$newVersion /p:CommitHash=$(git rev-parse HEAD)
+          } else { Write-Host "Failed to parse current version for $($project). Skipping." }
         }
 
     - name: Publish Packages
       if: success()  # Only run if previous steps succeed
       run: | 
-        # dotnet nuget add source --username Xeythhhh --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Xeythhhh/index.json"
-        # dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source github
+        dotnet nuget add source --username Xeythhhh --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Xeythhhh/index.json"
+        dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source github
         # dotnet nuget push ./artifacts/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json"
