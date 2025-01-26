@@ -38,7 +38,6 @@ jobs:
         run: dotnet test --no-build --configuration Release --verbosity normal
 
       - name: Determine changes
-        id: changes
         shell: pwsh
         run: |
           $projects = Get-ChildItem -Recurse -Filter '*.csproj' | Where-Object {
@@ -87,7 +86,13 @@ jobs:
               }
             }
           }
-          $changedProjects | Out-File -FilePath 
+          
+          $changedProjectsString = $changedProjects -join ','
+          Write-Output "changed_projects=$changedProjectsString" >> $GITHUB_ENV
+          
+      - name: Use changed projects (Debug)
+        run: |
+          echo "Changed projects: ${{ env.changed_projects }}"
 
       # - name: Pack projects
       #   if: steps.changes.outputs.changed_projects
